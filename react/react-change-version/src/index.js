@@ -1,5 +1,4 @@
 import "./index.css";
-import "./register-sw";
 
 import React from "react";
 import App from "./App";

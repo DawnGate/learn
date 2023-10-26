@@ -36,6 +36,7 @@ const config = {
     new CopyWebpackPlugin({
       patterns: [
         { from: `${srcPath}/service-worker.js`, to: "service-worker.js" },
+        { from: `${publicPath}/version.json`, to: "version.json" },
       ],
     }),
     new ProvidePlugin({

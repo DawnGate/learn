@@ -1,4 +1,4 @@
-console.log("regis server worker");
+console.log("regis service worker");
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
