@@ -1,0 +1,20 @@
+{
+  "name": "multi-react",
+  "private": true,
+  "version": "0.0.0",
+  "workspaces": [
+    "./app1",
+    "./app2",
+    "./app3",
+    "./app4"
+  ],
+  "scripts": {
+    "list": "yarn lerna list",
+    "start": "yarn lerna run start",
+    "build": "yarn lerna run build",
+    "clean": "yarn lerna run clean"
+  },
+  "devDependencies": {
+    "lerna": "^6.6.2"
+  }
+}

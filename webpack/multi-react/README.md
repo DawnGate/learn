@@ -2,7 +2,7 @@
 
 - [x] setting 3 react project, 1 shell and 2 remote
 - [x] setting react remote (css module ) import into shell
-- [] using lerna to config run parallel when develop
+- [x] using lerna to config run parallel when develop
 - [] app4 with tailwindcss
 - [] change app3 to version 16 of react
 - [] testing with cypress
