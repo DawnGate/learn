@@ -1,33 +1,36 @@
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require("path");
 
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ModuleFederationPlugin =
   require("webpack").container.ModuleFederationPlugin;
 
-const path = require("path");
+const deps = require("./package.json").dependencies;
 
 module.exports = {
-  entry: "./src/index",
   mode: "development",
-  target: "web",
-  devServer: {
-    static: {
-      directory: path.join(__dirname, "dist"),
-    },
-    hot: true,
-    port: 3001,
-  },
+  entry: "./src/index.js",
   output: {
     path: path.resolve(__dirname, "dist"),
   },
+
+  devServer: {
+    port: 3004,
+    hot: true,
+  },
+
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        loader: "babel-loader",
         exclude: /node_modules/,
+        loader: "babel-loader",
         options: {
           presets: ["@babel/preset-react"],
         },
+      },
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
       },
     ],
   },
@@ -36,18 +39,21 @@ module.exports = {
   },
   plugins: [
     new ModuleFederationPlugin({
-      name: "app1",
-      remotes: {
-        app4: "app4@http://localhost:3004/remoteEntry.js",
+      name: "app4",
+      filename: "remoteEntry.js",
+      exposes: {
+        "./Widget": "./src/Widget",
       },
       shared: {
         react: {
+          requiredVersion: deps.react,
           import: "react",
           shareKey: "react",
           shareScope: "default",
           singleton: true,
         },
         "react-dom": {
+          requiredVersion: deps["react-dom"],
           singleton: true,
         },
       },

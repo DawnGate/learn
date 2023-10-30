@@ -1,5 +1,7 @@
 import React, { Suspense, useEffect, useState } from "react";
 
+const App4Widget = React.lazy(() => import("app4/Widget"));
+
 // loading component from remote
 const loadComponent = (scope, module) => {
   return async () => {
@@ -110,6 +112,12 @@ const App = () => {
     <div>
       <h1>App 1</h1>
       <p>The content of remote App</p>
+      <div>
+        <p>App4 widget</p>
+        <Suspense fallback="Loading content">
+          <App4Widget />
+        </Suspense>
+      </div>
       <button onClick={setApp2}>Loading App 2 Widget</button>
       <button onClick={setApp3}>Loading App 3 Widget</button>
       <div
