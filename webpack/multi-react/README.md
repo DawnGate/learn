@@ -4,7 +4,7 @@
 - [x] setting react remote (css module ) import into shell
 - [x] using lerna to config run parallel when develop
 - [x] app4 with tailwindcss => only import something you need
-- [] change app3 to version 16 of react
+- [!] change app3 to version 16 of react (Nothing problem), import app2 component to app 3 (Get problem => the solution from [https://github.com/module-federation/module-federation-examples/tree/master/different-react-versions] only help a little => component of the app2 will render by react16-dom, it not expected => check later with option useIntersectEffect of react 18)
 - [] change app2 to typescript
 - [] testing with cypress
 - [] init addition 1 vue project as remote
