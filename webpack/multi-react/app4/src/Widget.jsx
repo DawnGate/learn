@@ -1,5 +1,9 @@
 import React from "react";
 
+// ony import something you need, the shell will cover other
+// https://dev.to/florianrappl/css-in-micro-frontends-4jai
+import "./main.css";
+
 // 1. First option include all file with your component
 // But it make your host component will change
 // import "tailwindcss/tailwind.css";
@@ -8,6 +12,7 @@ import React from "react";
 // using twin.macro,
 
 // 3. using mini-css-extract-plugin, but not what I expected.
+// This not good, because the problem like above, the global css effect all element
 
 import styles from "./styles.module.css";
 
