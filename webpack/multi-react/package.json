@@ -12,9 +12,11 @@
     "list": "yarn lerna list",
     "start": "yarn lerna run start",
     "build": "yarn lerna run build",
-    "clean": "yarn lerna run clean"
+    "clean": "yarn lerna run clean",
+    "test": "yarn cypress open --config-file ./cypress/cypress.config.js"
   },
   "devDependencies": {
+    "cypress": "^13.4.0",
     "lerna": "^6.6.2"
   }
 }

@@ -131,8 +131,12 @@ const App = () => {
           <App4Widget />
         </Suspense>
       </div>
-      <button onClick={setApp2}>Loading App 2 Widget</button>
-      <button onClick={setApp3}>Loading App 3 Widget</button>
+      <button data-e2e="Load-app2" onClick={setApp2}>
+        Loading App 2 Widget
+      </button>
+      <button data-e2e="Load-app3" onClick={setApp3}>
+        Loading App 3 Widget
+      </button>
       <button onClick={setApp2Button}>Loading App 2 Button</button>
       <div
         style={{

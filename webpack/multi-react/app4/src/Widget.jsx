@@ -25,6 +25,7 @@ const Widget = () => {
         backgroundColor: "yellow",
       }}
       className={styles.widget}
+      data-e2e="APP_4__WIDGET"
     >
       <h2>This is widget of app 4</h2>
       <h3 className="bg-teal-200 text-red-300">Test with tailwindcss</h3>
