@@ -87,13 +87,14 @@ export const useFederationComponent = (remoteUrl, scope, module) => {
 };
 
 const App = () => {
-  const [{ module, scope, url }, setSystem] = useState({});
+  const [{ module, scope, url, props }, setSystem] = useState({});
 
   const setApp2 = () => {
     setSystem({
       url: "http://localhost:3002/remoteEntry.js",
       scope: "app2",
       module: "./Widget",
+      props: {},
     });
   };
 
@@ -102,6 +103,18 @@ const App = () => {
       url: "http://localhost:3003/remoteEntry.js",
       scope: "app3",
       module: "./Widget",
+      props: {},
+    });
+  };
+
+  const setApp2Button = () => {
+    setSystem({
+      url: "http://localhost:3002/remoteEntry.js",
+      scope: "app2",
+      module: "./Button",
+      props: {
+        text: "Hello",
+      },
     });
   };
 
@@ -120,6 +133,7 @@ const App = () => {
       </div>
       <button onClick={setApp2}>Loading App 2 Widget</button>
       <button onClick={setApp3}>Loading App 3 Widget</button>
+      <button onClick={setApp2Button}>Loading App 2 Button</button>
       <div
         style={{
           marginTop: "2em",
@@ -128,7 +142,7 @@ const App = () => {
         <Suspense fallback="Loading system">
           {errorLoading
             ? `Error loading module "${module}"`
-            : FederatedComponent && <FederatedComponent />}
+            : FederatedComponent && <FederatedComponent {...props} />}
         </Suspense>
       </div>
     </div>

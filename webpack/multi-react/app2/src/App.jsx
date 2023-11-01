@@ -9,7 +9,7 @@ const App = () => {
       <h1>App 2 Host</h1>
       <h2>Remote</h2>
       <Widget />
-      <Button />
+      <Button text="Hello" />
     </div>
   );
 };
