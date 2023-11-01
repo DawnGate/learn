@@ -8,7 +8,7 @@
 - [x] change app2 to typescript, import to app1 (addition props pass from app1 to app2)
 - [x] testing with cypress simple ( load all app, check app1 with all dynamic loading remote)
 - [?] init addition 1 vue project(nuxt) as remote -> nuxt not have any official support for this app, only angular and vue
-- [] Normal vue project
+- [] addition normal vue project
 - [] share theme ( dark, light) state between remotes and shell
 
 # Docs
