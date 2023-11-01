@@ -7,8 +7,9 @@
 - [!] change app3 to version 16 of react (Nothing problem), import app2 component to app 3 (Get problem => the solution from [https://github.com/module-federation/module-federation-examples/tree/master/different-react-versions] only help a little => component of the app2 will render by react16-dom, it not expected => check later with option useIntersectEffect of react 18)
 - [x] change app2 to typescript, import to app1 (addition props pass from app1 to app2)
 - [x] testing with cypress simple ( load all app, check app1 with all dynamic loading remote)
-- [] init addition 1 vue project as remote
-- [] share theme ( dark, light) state between 3 remote and shell
+- [?] init addition 1 vue project(nuxt) as remote -> nuxt not have any official support for this app, only angular and vue
+- [] Normal vue project
+- [] share theme ( dark, light) state between remotes and shell
 
 # Docs
 
@@ -16,3 +17,14 @@
 - [x] https://indepth.dev/webpack-5-module-federation-a-game-changer-in-javascript-architecture/
 - [] https://viblo.asia/p/microfrontend-module-federation-dua-microservices-den-voi-frontend-AZoJjXEEVY7
 - [] https://dev.to/florianrappl/css-in-micro-frontends-4jai
+- [x] https://engineering.razorpay.com/monolith-to-module-federation-8c400b4e5646
+
+# Questions
+
+What other real world app using webpack module federation??
+
+The problems
+
+# Note
+
+- https://www.youtube.com/@jherr -> channel for module federation implement
