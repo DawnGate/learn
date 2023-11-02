@@ -11,7 +11,7 @@ export default defineConfig({
       filename: "remoteEntry.js",
       exposes: {
         "./Widget": {
-          name: "widget",
+          name: "Widget",
           import: "./src/Widget.vue",
         },
       },
