@@ -7,8 +7,8 @@
 - [!] change app3 to version 16 of react (Nothing problem), import app2 component to app 3 (Get problem => the solution from [https://github.com/module-federation/module-federation-examples/tree/master/different-react-versions] only help a little => component of the app2 will render by react16-dom, it not expected => check later with option useIntersectEffect of react 18)
 - [x] change app2 to typescript, import to app1 (addition props pass from app1 to app2)
 - [x] testing with cypress simple ( load all app, check app1 with all dynamic loading remote)
-- [?] init addition 1 vue project(nuxt) as remote -> nuxt not have any official support for this app, only angular and vue
-- [] addition normal vue project ( with vite => not good), with webpack ? ->
+- [?] init addition 1 vue project(nuxt) as remote -> nuxt not have any official support for this app, only angular and vue,
+- [] addition normal vue project ( with vite => not good -> dynamic loading with vite still get problem -> only simple import loading), with webpack (dynamic loading?)
 - [] share theme ( dark, light) state between remotes and shell
 - [] any module will have a adapter to render component
 

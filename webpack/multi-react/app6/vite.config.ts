@@ -14,6 +14,7 @@ export default defineConfig({
           name: "Widget",
           import: "./src/Widget.vue",
         },
+        "./loadWidget": "./src/loadWidget.ts",
       },
       shared: ["vue"],
     }),

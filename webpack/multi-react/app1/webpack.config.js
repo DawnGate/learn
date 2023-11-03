@@ -39,6 +39,7 @@ module.exports = {
       name: "app1",
       remotes: {
         app4: "app4@http://localhost:3004/remoteEntry.js",
+        app6: `promise import("http://localhost:3006/assets/remoteEntry.js")`,
       },
       shared: {
         react: {
