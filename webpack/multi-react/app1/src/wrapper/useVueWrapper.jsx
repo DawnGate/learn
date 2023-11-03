@@ -14,7 +14,7 @@ const loadComponent = (scope, module) => {
 
 // dynamic script in header html
 const urlCache = new Set();
-const useDynamicScript = (url, isModule) => {
+const useDynamicScript = (url) => {
   const [ready, setReady] = useState(false);
   const [errorLoading, setErrorLoading] = useState(false);
 
@@ -33,11 +33,8 @@ const useDynamicScript = (url, isModule) => {
     const element = document.createElement("script");
 
     element.src = url;
-    if (isModule) {
-      element.type = "module";
-    } else {
-      element.type = "text/javascript";
-    }
+
+    element.type = "text/javascript";
 
     element.async = true;
 
@@ -70,27 +67,21 @@ const componentCache = new Map();
 export const useVueWrapper = ({ remoteUrl, scope, module, isModule }) => {
   const key = `${remoteUrl}-${scope}-${module}`;
 
-  const ref = useRef();
+  const vueRef = useRef();
 
-  const { ready, errorLoading } = useDynamicScript(remoteUrl, isModule);
-
-  useEffect(() => {
-    if (ref.current) {
-      ref.current = null;
-    }
-  }, [key]);
+  const { ready, errorLoading } = useDynamicScript(remoteUrl);
 
   useEffect(() => {
     if (ready) {
       loadComponent(scope, module)().then((res) => {
-        // componentCache.set(key, Comp);
-        // setComponent(Comp);
-        console.log(res);
+        res.default(vueRef.current);
       });
     }
   }, [ready, key]);
 
-  const renderModule = <div ref={ref} />;
+  console.log(vueRef.current);
+
+  const renderModule = <div ref={vueRef} />;
 
   return { errorLoading, renderModule };
 };

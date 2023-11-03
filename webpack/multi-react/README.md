@@ -8,7 +8,8 @@
 - [x] change app2 to typescript, import to app1 (addition props pass from app1 to app2)
 - [x] testing with cypress simple ( load all app, check app1 with all dynamic loading remote)
 - [?] init addition 1 vue project(nuxt) as remote -> nuxt not have any official support for this app, only angular and vue,
-- [] addition normal vue project ( with vite => not good -> dynamic loading with vite still get problem -> only simple import loading), with webpack (dynamic loading?)
+- [x] addition normal vue project ( with vite => not good -> dynamic loading with vite still get problem -> only simple import loading), with webpack (dynamic loading with vue same perfect, with loadComponent than import component)
+- [] What is shared, can using library from share
 - [] share theme ( dark, light) state between remotes and shell
 - [] any module will have a adapter to render component
 

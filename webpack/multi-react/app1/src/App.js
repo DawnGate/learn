@@ -1,5 +1,8 @@
-import React, { Suspense, useEffect, useRef, useState } from "react";
+import React, { Suspense, useRef, useState } from "react";
+
 import useReactWrapper from "./wrapper/useReactWrapper";
+import useVueWrapper from "./wrapper/useVueWrapper";
+
 import loadApp6Widget from "app6/loadWidget";
 // direct load component
 const App4Widget = React.lazy(() => import("app4/Widget"));
@@ -8,6 +11,7 @@ const App4Widget = React.lazy(() => import("app4/Widget"));
 
 const App = () => {
   const [loadableReact, setLoadableReact] = useState({});
+  const [loadableVue, setLoadableVue] = useState({});
 
   const app6Ref = useRef();
 
@@ -39,7 +43,17 @@ const App = () => {
     loadApp6Widget(app6Ref.current);
   };
 
+  const setApp7Widget = () => {
+    setLoadableVue({
+      remoteUrl: "http://localhost:3007/remoteEntry.js",
+      scope: "app7",
+      module: "./loadWidget",
+    });
+  };
+
   const { errorLoading, renderModule } = useReactWrapper(loadableReact);
+  const { errorLoading: errorLoadingVue, renderModule: renderModuleVue } =
+    useVueWrapper(loadableVue);
 
   return (
     <div>
@@ -59,12 +73,14 @@ const App = () => {
       </button>
       <button onClick={setApp2Button}>Loading App 2 Button</button>
       <button onClick={setApp6Widget}>Loading App 6 Widget</button>
+      <button onClick={setApp7Widget}>Loading App 7 Widget</button>
       <div
         style={{
           marginTop: "2em",
         }}
       >
         {!errorLoading && renderModule}
+        {!errorLoadingVue && renderModuleVue}
         <div ref={app6Ref} />
       </div>
     </div>

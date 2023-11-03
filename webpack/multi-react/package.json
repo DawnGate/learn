@@ -7,7 +7,8 @@
     "./app2",
     "./app3",
     "./app4",
-    "./app6"
+    "./app6",
+    "./app7"
   ],
   "scripts": {
     "list": "yarn lerna list",
