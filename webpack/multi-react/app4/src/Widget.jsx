@@ -16,13 +16,13 @@ import "./main.css";
 
 import styles from "./styles.module.css";
 
-const Widget = () => {
+const Widget = ({ theme }) => {
   return (
     <div
       style={{
         margin: "8px",
         borderRadius: "8px",
-        backgroundColor: "yellow",
+        backgroundColor: theme === "light" ? "yellow" : "orange",
       }}
       className={styles.widget}
       data-e2e="APP_4__WIDGET"

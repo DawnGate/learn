@@ -79,8 +79,6 @@ export const useVueWrapper = ({ remoteUrl, scope, module, isModule }) => {
     }
   }, [ready, key]);
 
-  console.log(vueRef.current);
-
   const renderModule = <div ref={vueRef} />;
 
   return { errorLoading, renderModule };

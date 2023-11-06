@@ -9,9 +9,7 @@
 - [x] testing with cypress simple ( load all app, check app1 with all dynamic loading remote)
 - [?] init addition 1 vue project(nuxt) as remote -> nuxt not have any official support for this app, only angular and vue,
 - [x] addition normal vue project ( with vite => not good -> dynamic loading with vite still get problem -> only simple import loading), with webpack (dynamic loading with vue same perfect, with loadComponent than import component)
-- [] What is shared, can using library from share
-- [] share theme ( dark, light) state between remotes and shell
-- [] any module will have a adapter to render component
+- [x] share theme ( dark, light) state between remotes and shell ( I manage state from shell => it like you state auth token to remote app, and the remote app will using this state base on the demand or custom it local store for handle this state) -> maybe later will have shared folder will store all state from the library can shared state between all monorepo
 
 # Docs
 
