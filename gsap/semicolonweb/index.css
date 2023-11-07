@@ -5,13 +5,40 @@
   src: url(./public/fonts/OpenSans-ExtraBold.ttf) format("truetype");
 }
 
+:root {
+  --color-bg: #e4e3ce;
+  --cursor-stroke: #436e67;
+}
+
 * {
   margin: 0;
   padding: 0;
   font-family: "Open Sans";
 }
 
+main {
+  height: 100%;
+  width: 100%;
+  min-height: 100vh;
+  min-width: 100vw;
+  background-color: var(--color-bg);
+  overflow: hidden;
+}
+
 .demo {
   color: red;
   font-weight: 500;
+}
+
+.circle {
+  stroke-width: 3px;
+  fill: none;
+  stroke: var(--cursor-stroke);
+}
+
+.mouse-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  opacity: 0;
 }
