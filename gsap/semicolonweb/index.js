@@ -2,17 +2,7 @@ import("./index.css");
 
 import gsap from "gsap";
 
-import firstImage from "./public/images/1.jpg";
-
-const hello = "hello";
-console.log("hello");
-
-const boxDiv = document.createElement("div");
-boxDiv.style =
-  "width: 40px; height: 40px; border-radius: 4px; background-color: red;";
-document.querySelector(".app").appendChild(boxDiv);
-
-gsap.from(boxDiv, { x: 200, rotate: 180, duration: 2, yPercent: 50 });
+import $ from "jquery";
 
 // circle mouse
 const circleMouseSvg = document.createElementNS(
@@ -33,7 +23,7 @@ circleMouseSvg.setAttribute("width", "40");
 circleMouseSvg.setAttribute("height", "40");
 circleMouseSvg.setAttribute("viewBox", "0 0 40 40");
 
-document.querySelector(".app").appendChild(circleMouseSvg);
+document.querySelector("#app").appendChild(circleMouseSvg);
 
 function handleMouseMove(event) {
   gsap.to(circleMouseSvg, {
