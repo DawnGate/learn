@@ -26,12 +26,22 @@
   font-size: 1.125rem;
   --color-bg: #e4e3ce;
   --cursor-stroke: #436e67;
+  --color-text: #233a48;
+  --color-content-title-sub: #436e67;
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
 * {
   margin: 0;
   padding: 0;
   font-family: "Playfair Display";
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
 }
 
 main {
@@ -59,14 +69,112 @@ main {
   top: 0;
   left: 0;
   opacity: 0;
+  pointer-events: none;
 }
 
 .header {
   padding: 2rem 3rem;
+  display: grid;
+  position: fixed;
+  width: 100%;
+  grid-template-columns: 75% 25%;
+  align-items: center;
 }
 
 .header_logo {
-  width: 80px;
   border: 2px solid #eee;
   border-radius: 50%;
+}
+
+.header_links {
+  justify-self: flex-end;
+}
+
+.header_links > a {
+  padding: 5px 7px;
+  border-radius: 3px;
+  pointer-events: auto;
+  display: inline-block;
+
+  font-weight: 600;
+  font-family: var(--font-sans);
+
+  color: var(--color-text);
+  text-decoration: none;
+
+  position: relative;
+  z-index: 1;
+}
+
+a.header_link::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  background-color: #bed0a6;
+  left: 0;
+  bottom: 0;
+  border-radius: 3px;
+  z-index: -1;
+  transition: all 0.2s;
+}
+
+a.header_link:hover::before {
+  height: 100%;
+}
+
+.header_links a:not(:last-child) {
+  margin-right: 1rem;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  flex-direction: column;
+}
+
+.content_title {
+  font-weight: 800;
+  font-size: 10vw;
+  padding: 0 10px;
+  position: relative;
+  line-height: 1;
+  color: var(--color-text);
+  z-index: 0;
+}
+
+.content_title::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 35%;
+  left: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, transparent, #bed0a6);
+  z-index: -1;
+}
+
+.content_sub_title {
+  margin-top: 20px;
+  font-size: 1rem;
+  color: var(--color-content-title-sub);
+  font-family: var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-weight: 700;
+}
+
+.social_links {
+  display: flex;
+  margin-top: 30px;
+  gap: 32px;
+}
+
+.social_links a {
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  color: black;
 }
