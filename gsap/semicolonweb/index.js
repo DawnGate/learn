@@ -2,8 +2,6 @@ import("./index.css");
 
 import gsap from "gsap";
 
-import $ from "jquery";
-
 // circle mouse
 const circleMouseSvg = document.createElementNS(
   "http://www.w3.org/2000/svg",
@@ -25,53 +23,71 @@ circleMouseSvg.setAttribute("viewBox", "0 0 40 40");
 
 document.querySelector("#app").appendChild(circleMouseSvg);
 
-// grid items
-
-const gridItems = Array.from(
-  document.querySelectorAll(".image_grid .grid_item")
-);
-
-console.log(gridItems);
-
-var map = function map(x, a, b, c, d) {
+const map = function (x, a, b, c, d) {
   return ((x - a) * (d - c)) / (b - a) + c;
 };
 
-var lerp = function lerp(a, b, n) {
+const lerp = function (a, b, n) {
   return (1 - n) * a + n * b;
 };
 
 function getRandomArbitrary(min, max) {
-  return Math.random() * (max - min) + min;
+  return Math.floor(Math.random() * (max - min) + min);
 }
 
-const xMax = getRandomArbitrary(15, 60);
-const yMax = getRandomArbitrary(30, 90);
-const rMax = getRandomArbitrary(-15, 15);
+// grid items
 
-console.log(xMax, yMax, rMax);
+const gridItems = Array.from(
+  document.querySelectorAll(".image_grid .grid_item")
+).map((item) => ({
+  target: item,
+  randomData: {
+    xRand: getRandomArbitrary(15, 60),
+    yRand: getRandomArbitrary(30, 90),
+    rRand: getRandomArbitrary(-15, 15),
+  },
+}));
+
+window.onload = function () {
+  console.log("Hello");
+
+  gridItems.forEach((item) => {
+    gsap.fromTo(
+      item.target,
+      {
+        opacity: 0,
+        scale: 0.7,
+      },
+      {
+        opacity: 1,
+        scale: 1,
+      }
+    );
+  });
+};
 
 function handleMouseMove(event) {
   const x = event.clientX;
   const y = event.clientY;
 
-  const w = window.innerWidth / 2;
-  const h = window.innerHeight / 2;
-
-  console.log(x, y, w, h);
-
-  const translateX = lerp(0, map(x, 0, w, -xMax, xMax), 0.2);
-  const translateY = lerp(0, map(y, 0, h, -yMax, yMax), 0.2);
-  const rotate = lerp(0, map(x, 0, w, -rMax, rMax), 0.2);
-
-  // console.log(translateX, translateY, rotate);
+  const w = window.innerWidth;
+  const h = window.innerHeight;
 
   gridItems.map((item) => {
-    gsap.to(item, {
+    const { xRand, yRand, rRand } = item.randomData;
+    const translateX = map(x, 0, w, -xRand, xRand);
+    const translateY = map(y, 0, h, -yRand, yRand);
+    const rotate = map(x, 0, w, -rRand, rRand);
+    gsap.to(item.target, {
       x: translateX,
       y: translateY,
       rotate,
-      duration: 0.5,
+      duration: 3,
+      opacity: 0.8,
+      ease: "power1.out",
+      stagger: {
+        amount: 0.6,
+      },
     });
   });
 
