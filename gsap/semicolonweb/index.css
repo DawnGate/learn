@@ -75,12 +75,13 @@ main {
 
 .header {
   padding: 2rem 3rem;
-  display: grid;
-  position: fixed;
-  z-index: 10;
+  display: block;
   width: 100%;
-  grid-template-columns: 75% 25%;
-  align-items: center;
+  text-align: center;
+}
+
+.header_image {
+  justify-self: start;
 }
 
 .header_logo {
@@ -133,8 +134,9 @@ a.header_link:hover::before {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  height: calc(100vh - 15rem);
   flex-direction: column;
+  position: relative;
 }
 
 .content_title {
@@ -236,4 +238,20 @@ a.header_link:hover::before {
 
 .grid_item.pos_10 {
   grid-area: 37/39/55/47;
+}
+
+@media (min-width: 849px) {
+  .header {
+    padding: 2rem 3rem;
+    display: grid;
+    position: fixed;
+    z-index: 10;
+    width: 100%;
+    grid-template-columns: 75% 25%;
+    align-items: center;
+  }
+
+  .content {
+    height: 100%;
+  }
 }
