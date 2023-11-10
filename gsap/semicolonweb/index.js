@@ -49,21 +49,23 @@ const gridItems = Array.from(
 }));
 
 window.onload = function () {
-  console.log("Hello");
-
-  gridItems.forEach((item) => {
-    gsap.fromTo(
-      item.target,
-      {
-        opacity: 0,
-        scale: 0.7,
+  gsap.fromTo(
+    ".grid_item",
+    {
+      opacity: 0,
+      scale: 0.7,
+    },
+    {
+      opacity: 1,
+      scale: 1,
+      duration: 1,
+      stagger: {
+        amount: 1,
+        grid: "auto",
+        from: "center",
       },
-      {
-        opacity: 1,
-        scale: 1,
-      }
-    );
-  });
+    }
+  );
 };
 
 function handleMouseMove(event) {
@@ -82,7 +84,7 @@ function handleMouseMove(event) {
       x: translateX,
       y: translateY,
       rotate,
-      duration: 3,
+      duration: 1,
       opacity: 0.8,
       ease: "power1.out",
       stagger: {
