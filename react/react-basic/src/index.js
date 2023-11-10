@@ -5,6 +5,7 @@ import Hooks from "./Hooks";
 import FunctionAsChildren from "./FunctionAsChildren";
 import ConditionalRendering from "./ConditionalRendering";
 import CreateElement from "./CreateElement";
+import CreatePortal from "./CreatePortal";
 
 const root = createRoot(document.getElementById("root"));
 
@@ -13,6 +14,7 @@ root.render(
     {/* <Hooks /> */}
     {/* <FunctionAsChildren /> */}
     {/* <ConditionalRendering /> */}
-    <CreateElement />
+    {/* <CreateElement /> */}
+    <CreatePortal />
   </React.StrictMode>
 );
