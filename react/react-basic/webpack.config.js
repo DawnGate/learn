@@ -13,12 +13,15 @@ const config = {
   module: {
     rules: [
       {
+        test: /\.(js|jsx)$/,
         use: "babel-loader",
         exclude: /node_modules/,
         include: srcPath,
-        test: /\.js$/,
       },
     ],
+  },
+  resolve: {
+    extensions: [".js", ".jsx"],
   },
   devServer: {
     port: 8080,
