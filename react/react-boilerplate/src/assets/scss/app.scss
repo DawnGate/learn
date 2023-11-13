@@ -1,0 +1,24 @@
+@import './reset';
+@import 'bootstrap/scss/bootstrap';
+
+$primary-color: #333;
+
+:global {
+  html,
+  body {
+    width: 100%;
+  }
+
+  body {
+    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  }
+
+  #app {
+    width: 100%;
+    background-color: $primary-color;
+  }
+
+  .demo {
+    width: 30px;
+  }
+}

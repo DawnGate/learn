@@ -1,12 +1,11 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-const BundleAnalyzerPlugin =
-  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const {BundleAnalyzerPlugin} = require("webpack-bundle-analyzer");
 
+const { merge } = require("webpack-merge");
 const common = require("./webpack.common");
 
 const { buildPath, templatePath, faviconPath } = require("./paths");
-const { merge } = require("webpack-merge");
 
 module.exports = merge(common, {
   mode: "development",
@@ -32,7 +31,6 @@ module.exports = merge(common, {
             options: {
               modules: true,
               importLoaders: 2,
-              localIdentName: "[path][name]__[local]--[hash:base64:5]",
             },
           },
           "postcss-loader",
