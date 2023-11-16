@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="My midjourney AI art" />
+
+<title>Gallery Art</title>
+
+<meta property="og:image" content="https://cdn.midjourney.com/28df4066-dc0c-4741-a3da-3120c0b547c1/grid_0_384_N.webp" />
+<meta property="og:description" content="Gallery of art generated through Midjourney AI" />
+
+<style>
+    html {
+        background-color: rgb(1, 5, 19);
+        background-image: url(data:image/png;base64,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);
+    }
+
+    body {
+        /* prevent the exceeds the viewport width*/
+        overflow-x: hidden;
+        /* reset margin for all user agent and browser*/
+        margin: 0;
+    }
+
+    #github-icon {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        transition: transform 0.2s ease-out;
+    }
+
+    #github-icon:hover {
+        /* Can i use with transform -> 98% user can access */
+        transform: scale(1.1);
+    }
+
+    .box {
+        overflow: hidden;
+        background-color: rgb(34, 36, 53);
+        box-shadow: 0 0px 2px 0 rgba(255, 255, 255, 0.2)
+            /* shadow acting as border. Won't effect layout*/
+            , 0 4px 28px 0 rgba(0, 0, 0, 0.4)
+            /* acutal shadow*/
+        ;
+        border-radius: 16px;
+        background-size: 100%;
+        background-repeat: no-repeat;
+    }
+</style>
+
+<head />
+
+<body>
+    <a href="/" target="_blank" id="github-icon">
+        <!-- Keep only something need from github logo -->
+        <svg height="32" width="32" viewBox="0 0 16 16">
+            <path
+                d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"
+                fill="#fff">
+            </path>
+        </svg>
+    </a>
+    <script>
+        "use strict"
+
+        // spring physics
+
+        // spring animation step. Normaly 4 step for 60 fps (1/60 => 16.6 ms/ frame) and 2 for 120fps(1/120 => 8.3ms/frame)
+
+        // 4ms/ step => 
+        const msPerAnimationStep = 4
+        function spring(pos, v = 0, k = 290, b = 30) {
+            return { pos, dest: pos, v, k, b } //  k = stiffness, b = damping
+        }
+
+        function springStep(config) {
+            // Inspired by  https://blog.maximeheckel.com/posts/the-physics-behind-spring-animations/
+            const t = msPerAnimationStep / 1000
+            const { pos, dest, v, k, b } = config
+
+            const Fspring = -k * (pos - dest) // kg / s^2
+            const Fdamper = -b * v // kg / s
+
+            const a = Fspring + Fdamper // mass is 1, so not need to devided
+            const newV = a + t
+            const newPos = pos + newV * t;
+
+            config.pos = newPos, config.v = newV;
+        }
+
+        function springGoToEnd(config) {
+            config.pos = config.dest;
+            config.v = 0
+        }
+
+        function clamp(min, v, max) {
+            return v > max ? max : v < min ? min : v
+        }
+
+        // constant layour metrics. The rest is dynamic
+        const promptPaddingBottom = 8
+        const promptSizeY = 47
+        const prompt1DSizeY = 64
+        const boxesGapX = 24, boxesGapY = 24
+        const boxed1DGapX = 52, boxes1DGapY = 28
+        const windowPaddingTop = 40
+        const gapToPeek = 40
+        const hitArea1DSizeX = 100 // left and right click region in 1D mode
+
+        function colsBoxMaxSizeXF(containerSizeX) {
+            const boxMinSizeX = 220
+            // how many cols in the window, ?? why - boxesGapX
+            const cols = clamp(1, Math.floor((containerSizeX - boxesGapX) / (boxMinSizeX + boxesGapX)), 7)
+            const boxMaxSizeX = (containerSizeX - boxesGapX - cols * boxesGapX) / cols
+            return { cols, boxMaxSizeX }
+        }
+
+        // state.
+        let animatedUntilTime = null
+        let reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+        let anchor = 0
+        let windowSizeX = document.documentElement.clientWidth
+        let scrollTop = window.scrollTop
+        let inputs = {
+            pointer: { x: -Infinity, y: -Infinity },
+            key: null,
+            clickedTarget: null
+        }
+
+
+        const windowSizeY = document.documentElement.clientHeight
+        const { cols, boxMaxSizeX } = colsBoxMaxSizeXF(windowSizeX)
+        const imageMaxSizeY = boxMaxSizeX + 100
+
+
+        const data = [
+            { id: 'daa6883b-75ae-4805-9fe8-d394006ca8ca/0_1', w: 1024, h: 1024, prompt: `Apple WWDC promo, dan mumford` },
+            { id: '0dcaf55a-6ece-42b1-a0b3-eb753d108415/0_3', w: 1424, h: 848, prompt: `Everything everywhere all at once, bold outlines` },
+            { id: '037086ce-0dec-4888-8938-13ef27b49c9d/0_0', w: 1344, h: 896, prompt: `Kid's back, low angle, staring up at mobius spaceship landing in ancient china` },
+            { id: 'cfd235ab-89b2-4834-9544-19768f160d2a/0_1', w: 1344, h: 896, prompt: `Cute and fluffy marshmallow modern mansion` },
+            { id: 'ab740a8e-54af-452a-9b74-7b8cb233c025/grid_0', w: 1024, h: 1024, prompt: `Voronoi 3D printed cup taking roots` }].map((d, i) => {
+                let node = document.createElement('div')
+                node.className = "box"
+                node.style.backgroundImage = `url(https://cdn.midjourney.com/${d.id}_384_N.webp)`
+
+                let promptNode = document.createElement('figcaption')
+                promptNode.className = "prompt"
+                promptNode.textContent = d.prompt
+
+                node.append(promptNode)
+
+                return {
+                    id: d.id,
+                    node
+                }
+            })
+
+        // for (let i = 0; i < data.length; i++) {
+        //     let d = data[i]
+
+        //     let { node } = d
+
+        //     document.body.appendChild(node)
+        // }
+
+        function render(now) {
+            // step1: batched DOM reads => avoid accidental DOM read and write interleaving
+
+            const newWindowSizeX = document.documentElement.clientWidth
+            const windowSizeY = document.documentElement.clientHeight
+
+            const animationDisabled = reducedMotion.matches
+            const currentScrollTop = window.scrollY
+            const hadImageId = window.location.hash.slice(1)
+
+            console.log(newWindowSizeX, windowSizeY, animationDisabled)
+            // step2: 
+        }
+
+        render()
+
+
+    </script>
+</body>
+
+</html>
