@@ -140,6 +140,10 @@
             { id: '037086ce-0dec-4888-8938-13ef27b49c9d/0_0', w: 1344, h: 896, prompt: `Kid's back, low angle, staring up at mobius spaceship landing in ancient china` },
             { id: 'cfd235ab-89b2-4834-9544-19768f160d2a/0_1', w: 1344, h: 896, prompt: `Cute and fluffy marshmallow modern mansion` },
             { id: 'ab740a8e-54af-452a-9b74-7b8cb233c025/grid_0', w: 1024, h: 1024, prompt: `Voronoi 3D printed cup taking roots` }].map((d, i) => {
+                const ar = d.w / d.h
+                const sizeX = Math.min(d.w, boxMaxSizeX, imageMaxSizeY * ar)
+                const sizeY = sizeX / ar + promptSizeY
+
                 let node = document.createElement('div')
                 node.className = "box"
                 node.style.backgroundImage = `url(https://cdn.midjourney.com/${d.id}_384_N.webp)`
@@ -152,17 +156,15 @@
 
                 return {
                     id: d.id,
+                    ar, // aspect ratio
+                    naturalSizeX: d.w,
+                    sizeX: spring(sizeX),
+                    sizY: spring(sizeY),
                     node
                 }
             })
 
-        // for (let i = 0; i < data.length; i++) {
-        //     let d = data[i]
 
-        //     let { node } = d
-
-        //     document.body.appendChild(node)
-        // }
 
         function render(now) {
             // step1: batched DOM reads => avoid accidental DOM read and write interleaving
@@ -176,6 +178,31 @@
 
             console.log(newWindowSizeX, windowSizeY, animationDisabled)
             // step2: 
+
+            // step3:
+            const { cols, boxMaxSizeX } = colsBoxMaxSizeXF(newWindowSizeX)
+            let boxes2DSizeX = [], boxes2DSizeY = [], rowsTop = [windowPaddingTop] // length: number of rows + 1
+            {
+                let rowMaxSizeY = 0;
+                for (let i = 0; i < data.length; i++) {
+                    const imgMaxSizeY = boxMaxSizeX
+                    const sizeX = Math.min(d.naturalSizeX, boxMaxSizeX, imageMaxSizeY * d.ar)
+                    const sizeY = sizeX / d.ar + promptSizeY
+                    boxes2DSizeX.push(sizeX)
+                    boxes2DSizeY.push(sizeY)
+
+                }
+            }
+
+            // step 5: render, Batch DOM writes
+            for (let i = 0; i < data.length; i++) {
+                let d = data[i]
+
+                let { node } = d
+
+                document.body.appendChild(node)
+            }
+
         }
 
         render()
