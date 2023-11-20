@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head></head>
+
+<body>
+    <main>
+        <div id="demo-animation"
+            style="width: 50px; height: 50px; border-radius: 4px; background-color: aqua; transition: all 1s ease;">
+        </div>
+    </main>
+    <script>
+        const element = document.getElementById("demo-animation");
+        let animatedUntilTime = null
+
+        const duration = 1 // s
+
+        const msPerAnimationStep = 4
+        function spring(pos, v = 0, k = 150, b = 30) {
+            return { pos, dest: pos, v, k, b } //  k = stiffness, b = damping
+        }
+        function springStep(config) {
+            // Inspired by  https://blog.maximeheckel.com/posts/the-physics-behind-spring-animations/
+            const t = msPerAnimationStep / (1000 * duration)
+            const { pos, dest, v, k, b } = config
+
+            const Fspring = -k * (pos - dest) // kg / s^2
+            const Fdamper = -b * v // kg / s
+
+            const a = Fspring + Fdamper // mass is 1, so not need to devided
+            const newV = v + a * t
+            const newPos = pos + newV * t;
+
+            config.pos = newPos, config.v = newV;
+        }
+
+
+        const demoSpring = spring(0)
+
+        const maxX = 200
+        demoSpring.dest = maxX
+
+        function step(timeStamp) {
+
+            let newAnimatedUntilTime = animatedUntilTime ?? timeStamp
+            const steps = Math.floor((timeStamp - newAnimatedUntilTime) / msPerAnimationStep)
+            newAnimatedUntilTime += steps * msPerAnimationStep
+            console.log(steps, newAnimatedUntilTime)
+
+            for (let i = 0; i < steps; i++) {
+                springStep(demoSpring)
+            }
+
+            element.style.transform = `translateX(${Math.min(demoSpring.pos, maxX)}px)`;
+            console.log(timeStamp)
+            console.log(demoSpring)
+
+            if (Math.abs(demoSpring.pos - demoSpring.dest) <= 0.01) {
+                // end animation
+                return true
+            } else {
+                animatedUntilTime = newAnimatedUntilTime
+                window.requestAnimationFrame(step)
+            }
+        }
+
+        window.requestAnimationFrame(step);
+    </script>
+</body>
+
+</html>

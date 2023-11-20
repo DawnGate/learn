@@ -47,6 +47,23 @@
         background-size: 100%;
         background-repeat: no-repeat;
     }
+
+    .prompt {
+        position: absolute;
+        width: 100%;
+        box-sizing: border-box;
+        color: rgb(192, 198, 205);
+        padding: 8px 12px 0px 12px;
+        font-size: 16px;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+    }
+
+    .prompt::before {
+        content: "❝";
+        color: rgb(122, 126, 130);
+        padding-right: 4px;
+    }
 </style>
 
 <head />
@@ -68,7 +85,7 @@
 
         // spring animation step. Normaly 4 step for 60 fps (1/60 => 16.6 ms/ frame) and 2 for 120fps(1/120 => 8.3ms/frame)
 
-        // 4ms/ step => 
+        // 4ms/ step
         const msPerAnimationStep = 4
         function spring(pos, v = 0, k = 290, b = 30) {
             return { pos, dest: pos, v, k, b } //  k = stiffness, b = damping
@@ -82,8 +99,8 @@
             const Fspring = -k * (pos - dest) // kg / s^2
             const Fdamper = -b * v // kg / s
 
-            const a = Fspring + Fdamper // mass is 1, so not need to devided
-            const newV = a + t
+            const a = Fspring + Fdamper // mass is 1, so not need to divided
+            const newV = v + a * t
             const newPos = pos + newV * t;
 
             config.pos = newPos, config.v = newV;
@@ -98,10 +115,12 @@
             return v > max ? max : v < min ? min : v
         }
 
+
+
         // constant layour metrics. The rest is dynamic
         const promptPaddingBottom = 8
-        const promptSizeY = 47
-        const prompt1DSizeY = 64
+        const promptSizeY = 47 + promptPaddingBottom
+        const prompt1DSizeY = 64 + promptPaddingBottom
         const boxesGapX = 24, boxesGapY = 24
         const boxed1DGapX = 52, boxes1DGapY = 28
         const windowPaddingTop = 40
@@ -109,9 +128,15 @@
         const hitArea1DSizeX = 100 // left and right click region in 1D mode
 
         function colsBoxMaxSizeXF(containerSizeX) {
+
+            // that size for mobile, when make sure in mobile not display 2 cols in same row
             const boxMinSizeX = 220
-            // how many cols in the window, ?? why - boxesGapX
+
+            // how many cols should show in the window, ?? why - boxesGapX
+            // we have gap + item + gap + item + gap => containerX - boxesGapX => Space for item (boxesGap + boxContainer) => the boxContainer ~ boxMinSizeX
             const cols = clamp(1, Math.floor((containerSizeX - boxesGapX) / (boxMinSizeX + boxesGapX)), 7)
+
+            // the maximun width of the box 
             const boxMaxSizeX = (containerSizeX - boxesGapX - cols * boxesGapX) / cols
             return { cols, boxMaxSizeX }
         }
@@ -128,43 +153,59 @@
             clickedTarget: null
         }
 
-
-        const windowSizeY = document.documentElement.clientHeight
-        const { cols, boxMaxSizeX } = colsBoxMaxSizeXF(windowSizeX)
-        const imageMaxSizeY = boxMaxSizeX + 100
-
-
-        const data = [
-            { id: 'daa6883b-75ae-4805-9fe8-d394006ca8ca/0_1', w: 1024, h: 1024, prompt: `Apple WWDC promo, dan mumford` },
-            { id: '0dcaf55a-6ece-42b1-a0b3-eb753d108415/0_3', w: 1424, h: 848, prompt: `Everything everywhere all at once, bold outlines` },
-            { id: '037086ce-0dec-4888-8938-13ef27b49c9d/0_0', w: 1344, h: 896, prompt: `Kid's back, low angle, staring up at mobius spaceship landing in ancient china` },
-            { id: 'cfd235ab-89b2-4834-9544-19768f160d2a/0_1', w: 1344, h: 896, prompt: `Cute and fluffy marshmallow modern mansion` },
-            { id: 'ab740a8e-54af-452a-9b74-7b8cb233c025/grid_0', w: 1024, h: 1024, prompt: `Voronoi 3D printed cup taking roots` }].map((d, i) => {
-                const ar = d.w / d.h
-                const sizeX = Math.min(d.w, boxMaxSizeX, imageMaxSizeY * ar)
-                const sizeY = sizeX / ar + promptSizeY
-
-                let node = document.createElement('div')
-                node.className = "box"
-                node.style.backgroundImage = `url(https://cdn.midjourney.com/${d.id}_384_N.webp)`
-
-                let promptNode = document.createElement('figcaption')
-                promptNode.className = "prompt"
-                promptNode.textContent = d.prompt
-
-                node.append(promptNode)
-
-                return {
-                    id: d.id,
-                    ar, // aspect ratio
-                    naturalSizeX: d.w,
-                    sizeX: spring(sizeX),
-                    sizY: spring(sizeY),
-                    node
-                }
-            })
+        let data;
+        {
+            const windowSizeY = document.documentElement.clientHeight
+            const { cols, boxMaxSizeX } = colsBoxMaxSizeXF(windowSizeX)
+            const imgMaxSizeY = boxMaxSizeX + 100
 
 
+            data = [
+                { id: 'daa6883b-75ae-4805-9fe8-d394006ca8ca/0_1', w: 1024, h: 1024, prompt: `Apple WWDC promo, dan mumford` },
+                { id: '0dcaf55a-6ece-42b1-a0b3-eb753d108415/0_3', w: 1424, h: 848, prompt: `Everything everywhere all at once, bold outlines` },
+                { id: '037086ce-0dec-4888-8938-13ef27b49c9d/0_0', w: 1344, h: 896, prompt: `Kid's back, low angle, staring up at mobius spaceship landing in ancient china` },
+                { id: 'cfd235ab-89b2-4834-9544-19768f160d2a/0_1', w: 1344, h: 896, prompt: `Cute and fluffy marshmallow modern mansion` },
+                { id: 'ab740a8e-54af-452a-9b74-7b8cb233c025/grid_0', w: 1024, h: 1024, prompt: `Voronoi 3D printed cup taking roots` }].map((d, i) => {
+                    // get aspect ratio of the image
+                    const ar = d.w / d.h
+                    // get the new size for width of image, it is the min value of origin width, max size of the box contain image or the width from maximun of the image height
+                    const sizeX = Math.min(d.w, boxMaxSizeX, imgMaxSizeY * ar)
+                    // from with width => height of image
+                    const sizeY = sizeX / ar + promptSizeY
+
+                    let node = document.createElement('div')
+                    node.className = "box"
+                    node.style.backgroundImage = `url(https://cdn.midjourney.com/${d.id}_384_N.webp)`
+
+                    let imgNode = document.createElement('img')
+
+                    let promptNode = document.createElement('figcaption')
+                    promptNode.className = "prompt"
+                    promptNode.textContent = d.prompt
+
+                    node.append(imgNode, promptNode)
+
+                    return {
+                        id: d.id,
+                        ar, // aspect ratio
+                        naturalSizeX: d.w,
+                        sizeX: spring(sizeX),
+                        sizeY: spring(sizeY),
+                        x: spring(Math.floor(i / cols) * -windowSizeX - windowSizeX),
+                        y: spring(windowSizeY + Math.floor(i / cols) * imgMaxSizeY),
+                        scale: spring(1),
+                        // for brightness and blur
+                        fxFactor: spring(20),
+                        node
+                    }
+                })
+        }
+
+        function springForEach(f) {
+            for (let d of data) {
+                f(d.sizeX); f(d.sizeY); f(d.x); f(d.y); f(d.scale); f(d.fxFactor)
+            }
+        }
 
         function render(now) {
             // step1: batched DOM reads => avoid accidental DOM read and write interleaving
@@ -176,36 +217,121 @@
             const currentScrollTop = window.scrollY
             const hadImageId = window.location.hash.slice(1)
 
-            console.log(newWindowSizeX, windowSizeY, animationDisabled)
             // step2: 
 
             // step3:
             const { cols, boxMaxSizeX } = colsBoxMaxSizeXF(newWindowSizeX)
             let boxes2DSizeX = [], boxes2DSizeY = [], rowsTop = [windowPaddingTop] // length: number of rows + 1
             {
+                // store the value of highest card in 1 rows
                 let rowMaxSizeY = 0;
                 for (let i = 0; i < data.length; i++) {
-                    const imgMaxSizeY = boxMaxSizeX
-                    const sizeX = Math.min(d.naturalSizeX, boxMaxSizeX, imageMaxSizeY * d.ar)
+                    let d = data[i]
+                    // get max hight the image can get
+                    const imgMaxSizeY = d.ar === 1 ? boxMaxSizeX * 0.85 // square make layout not feel correlatively
+                        : d.ar < 1 ? boxMaxSizeX * 1.05  // vertical images look a mit small, grow it
+                            : boxMaxSizeX
+                    // get new size  for width
+                    const sizeX = Math.min(d.naturalSizeX, boxMaxSizeX, imgMaxSizeY * d.ar)
+                    // get new size for height
                     const sizeY = sizeX / d.ar + promptSizeY
                     boxes2DSizeX.push(sizeX)
                     boxes2DSizeY.push(sizeY)
-
+                    rowMaxSizeY = Math.max(rowMaxSizeY, sizeY)
+                    // last box of the row or last box ever
+                    if (i % cols === cols - 1 || i === data.length - 1) {
+                        rowsTop.push(rowsTop.at(-1) + rowMaxSizeY + boxesGapY)
+                        rowMaxSizeY = 0
+                    }
                 }
             }
 
+            // calcute boxes positions, in 2D view
+            for (let i = 0; i < data.length; i++) {
+                let d = data[i]
+                const sizeX = boxes2DSizeX[i], sizeY = boxes2DSizeY[i]
+                // find the current row for render
+                const currentRow = Math.floor(i / cols)
+                const rowMaxSizeY = rowsTop[currentRow + 1] - boxesGapY - rowsTop[currentRow]
+                d.sizeX.dest = sizeX
+                d.sizeY.dest = sizeY
+                d.x.dest = boxesGapX + (boxMaxSizeX + boxesGapX) * (i % cols) + (boxMaxSizeX - sizeX) / 2
+                d.y.dest = rowsTop[currentRow] + (rowMaxSizeY - sizeY) / 2
+                d.scale.dest = 1
+                d.fxFactor.dest = 1
+            }
+
+            let adjustedScrollTop = currentScrollTop
+
+
+            // step 4: run animation
+
+            // when first time render => the animation === now
+            let newAnimatedUntilTime = animatedUntilTime ?? now
+
+            // now is timeStamp props from requestAnimationFrame => the time sometime random -> not only 4ms 
+            // so we need found the how many steps between Refresh Frame call
+            const steps = Math.floor((now - newAnimatedUntilTime) / msPerAnimationStep)
+            newAnimatedUntilTime += steps * msPerAnimationStep
+            let stillAnimating = false
+
+
+            if (animationDisabled) springForEach(springGoToEnd)
+            else {
+                springForEach(s => {
+                    for (let i = 0; i < steps; i++) springStep(s)
+                    // too close => done animation
+                    if (Math.abs(s.v) < 0.01 && Math.abs(s.dest - s.pos) < 0.01) springGoToEnd(s)
+                    else stillAnimating = true
+                })
+            }
+
+
             // step 5: render, Batch DOM writes
+            const browserUIMaxSizeTop = 100, browserUIMaxSizeBottom = 150
             for (let i = 0; i < data.length; i++) {
                 let d = data[i]
 
-                let { node } = d
+                let { node } = d, img = node.children[0], promt = node.children[1]
 
-                document.body.appendChild(node)
+                // only draw what's visible on screen
+                if (d.y.pos - adjustedScrollTop <= windowSizeY + browserUIMaxSizeBottom &&
+                    d.y.pos + d.sizeY.pos - adjustedScrollTop >= -browserUIMaxSizeTop
+                ) {
+                    node.style.width = `${d.sizeX.pos}px`
+                    node.style.height = `${d.sizeY.pos}px`
+                    node.style.transform = `translate3d(${d.x.pos}px, ${d.y.pos}px, 0) scale(${d.scale.pos})`
+                    promt.style.top = `${d.sizeX.pos / d.ar}px`
+
+                    if (node.parentNode === null) {
+                        document.body.appendChild(node)
+                    }
+
+                } else if (node.parentNode != null) {
+                    document.body.removeChild(node)
+                }
             }
+
+
+            // step 6: update and prepare for next frame
+            animatedUntilTime = stillAnimating ? newAnimatedUntilTime : null
+            windowSizeX = newWindowSizeX
+            scrollTop = adjustedScrollTop
+
+            return stillAnimating
 
         }
 
-        render()
+
+        // render and schedule rendering
+        function scheduleRender(debugForceRender) {
+
+            window.requestAnimationFrame(function renderAndMaybeScheduleAnotherRender(now) {
+                if (render(now)) scheduleRender()
+            })
+        }
+
+        scheduleRender()
 
 
     </script>
