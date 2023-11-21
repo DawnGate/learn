@@ -154,9 +154,16 @@
         let animatedUntilTime = null
         let reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
         // ! What is this
+        let cursor
         let anchor = 0
         let windowSizeX = document.documentElement.clientWidth
         let scrollTop = window.scrollTop
+
+        let inputs = {
+            pointer: { x: -Infinity, y: -Infinity },
+            key: null,
+            clickedTarget: null
+        }
 
         let data;
         {
@@ -233,6 +240,18 @@
             }
         }
 
+        // check box hit in 2D array
+        function hit2DMode(data, pointerX, pointerY) {
+            for (let i = 0; i < data.length; i++) {
+                let { x, y, sizeX, sizeY } = data[i]
+                if (x.dest <= pointerX && pointerX < x.dest + sizeX.dest && y.dest <= pointerY && pointerY < y.dest + sizeY.dest) {
+                    return i
+                }
+
+                return null
+            }
+        }
+
         function render(now) {
             // step1: batched DOM reads => avoid accidental DOM read and write interleaving
 
@@ -242,6 +261,8 @@
             const animationDisabled = reducedMotion.matches
             const currentScrollTop = window.scrollY
             const hashImageId = window.location.hash.slice(1)
+
+            const pointerXLocal = inputs.pointer.x + window.scrollX, pointerYLocal = inputs.pointer.y + currentScrollTop
 
             // step2: 
 
@@ -285,6 +306,14 @@
                 d.y.dest = rowsTop[currentRow] + (rowMaxSizeY - sizeY) / 2
                 d.scale.dest = 1
                 d.fxFactor.dest = 1
+            }
+
+            const hit = hit2DMode(data, pointerXLocal, pointerYLocal)
+            if (hit === null) cursor = 'auto'
+            else {
+                cursor = 'zoom-in'
+                let { x, y, sizeX, sizeY } = data[hit]
+                scale.dest = 1.02
             }
 
             // layout shifted, keep the box in the same place to prevent annoying layout jumps while view
