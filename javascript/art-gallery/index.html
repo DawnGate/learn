@@ -46,6 +46,7 @@
         border-radius: 16px;
         background-size: 100%;
         background-repeat: no-repeat;
+        position: absolute;
     }
 
     .prompt {
@@ -55,6 +56,7 @@
         color: rgb(192, 198, 205);
         padding: 8px 12px 0px 12px;
         font-size: 16px;
+        /* using for webkit-clamp -> limit display rows of words  */
         display: -webkit-box;
         -webkit-box-orient: vertical;
     }
@@ -80,6 +82,13 @@
     </a>
     <script>
         "use strict"
+
+        // === static DOM initialization. Just 1 in this app. The more you have here the more your app looks like a PDF document. Minimize
+        // with me, I think it help have a bottom space for the app
+        let dummyPlaceholder = document.createElement('div')
+        dummyPlaceholder.style.position = 'absolute'
+        dummyPlaceholder.style.width = '1px'
+        document.body.append(dummyPlaceholder)
 
         // spring physics
 
@@ -124,7 +133,7 @@
         const boxesGapX = 24, boxesGapY = 24
         const boxed1DGapX = 52, boxes1DGapY = 28
         const windowPaddingTop = 40
-        const gapToPeek = 40
+        const gapToPeek = windowPaddingTop // show some gap at the top of page to first element in row
         const hitArea1DSizeX = 100 // left and right click region in 1D mode
 
         function colsBoxMaxSizeXF(containerSizeX) {
@@ -144,14 +153,10 @@
         // state.
         let animatedUntilTime = null
         let reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+        // ! What is this
         let anchor = 0
         let windowSizeX = document.documentElement.clientWidth
         let scrollTop = window.scrollTop
-        let inputs = {
-            pointer: { x: -Infinity, y: -Infinity },
-            key: null,
-            clickedTarget: null
-        }
 
         let data;
         {
@@ -165,40 +170,61 @@
                 { id: '0dcaf55a-6ece-42b1-a0b3-eb753d108415/0_3', w: 1424, h: 848, prompt: `Everything everywhere all at once, bold outlines` },
                 { id: '037086ce-0dec-4888-8938-13ef27b49c9d/0_0', w: 1344, h: 896, prompt: `Kid's back, low angle, staring up at mobius spaceship landing in ancient china` },
                 { id: 'cfd235ab-89b2-4834-9544-19768f160d2a/0_1', w: 1344, h: 896, prompt: `Cute and fluffy marshmallow modern mansion` },
-                { id: 'ab740a8e-54af-452a-9b74-7b8cb233c025/grid_0', w: 1024, h: 1024, prompt: `Voronoi 3D printed cup taking roots` }].map((d, i) => {
-                    // get aspect ratio of the image
-                    const ar = d.w / d.h
-                    // get the new size for width of image, it is the min value of origin width, max size of the box contain image or the width from maximun of the image height
-                    const sizeX = Math.min(d.w, boxMaxSizeX, imgMaxSizeY * ar)
-                    // from with width => height of image
-                    const sizeY = sizeX / ar + promptSizeY
+                { id: 'ab740a8e-54af-452a-9b74-7b8cb233c025/grid_0', w: 1024, h: 1024, prompt: `Voronoi 3D printed cup taking roots` },
+                { id: 'bcf32fdc-6d81-40f0-9063-d67cb402ea2a/grid_0', w: 1344, h: 1024, prompt: `Marble sculpture of an orange, museum gallery, exhibit` },
+                { id: 'eb145f80-0196-4557-8560-e33637a3a807/grid_0', w: 846, h: 1728, prompt: `hourglass heart, liquid, grand canyon background` },
+                { id: 'e7096121-02c0-4b46-b74e-c8d50f1cf82f/grid_0', w: 846, h: 1728, prompt: `hourglass heart, liquid, dynamic background` },
+                { id: '604af437-f76b-4c7f-b778-1a3bf6ad663b/grid_0', w: 1024, h: 1024, prompt: `Golden retriever rising from the thick smokes, silhouette, contour` },
+                { id: 'b6beb80d-b006-45e0-a06d-5e482b541571/grid_0', w: 2304, h: 1536, prompt: `Jupiter sitting on a chair on Saturn` },
+                { id: 'c745ac87-7a5a-4f6e-a44e-c492e5ba9a1f/grid_0', w: 1024, h: 1024, prompt: `beautiful hyperrealistic abstract neural network colony, morning dew, depth of field` },
+                { id: 'a70b5a2e-046c-4e7c-a9d1-d1d9de5833dd/grid_0', w: 1024, h: 1024, prompt: `cute Christmas knolling` },
+                { id: '30d33a33-9b5b-4947-b813-4d0c5c2f9939/grid_0', w: 1536, h: 1024, prompt: `Chinese mid autumn festival on Neptune, surrealism` },
+                { id: 'fb622e95-814d-4f74-8ac0-04d266c8387d/grid_0', w: 1664, h: 2432, prompt: `eclipse in a bottle` },
+                { id: '91a44825-dc86-4166-bd9a-4b547bcad830/grid_0', w: 1664, h: 2432, prompt: `eclipse in a bottle` },
+                { id: '418aae43-2209-4d98-a2a9-b25d3b447e2c/grid_0', w: 1536, h: 1024, prompt: `city, interconnected cable wires toward giant server tower in the center, dan mumford, bright morning light` },
+                { id: '8ea0f4da-a9fc-4880-8f71-f51bf6c7f3d1/grid_0', w: 1536, h: 1024, prompt: `city, interconnected cable wires toward giant server tower in the center, dan mumford, bright morning light` },
+                { id: 'b4652c7e-44ee-4d3b-b385-9c5c237f177b/grid_0', w: 1536, h: 1024, prompt: `werewolf princess warrior, tower, Berserk manga style, black and white, by Kentaro Miura` },
+                { id: '733a5b94-3f35-4357-8ef5-645d1a9bb942/grid_0', w: 1024, h: 1536, prompt: `silk-like silhouette of koi fish, abstract wall paper, volumetric lighting` },
+                { id: '1c195159-f1b0-4f23-a605-dd30ad42bbe5/grid_0', w: 1536, h: 1024, prompt: `giant fearsome beast god descending upon the sky, james jean` },
+                { id: '0a1d96be-c49e-4769-a45f-3581500f1e19/grid_0', w: 1024, h: 1024, prompt: `dancing female astronaut exploring a floating food planet, bold colors, bold outlines, tshirt design` },
+                { id: '01c5a300-1597-4f45-99f8-c9cafe21925c/grid_0', w: 1536, h: 1024, prompt: `damascus steel metal zebra in a museum exhibit, dynamic running pose, bright morning daylight, low angle` },
+                { id: 'b88c0228-6442-4892-83ad-99cac2059abc/grid_0', w: 1024, h: 1536, prompt: `incredibly overloaded salmon crab shrimp octopus beef tomato lettuce onion noodle tornado floating tilted burger, promo photoshoot, spinning motion, explosive sea waves background, bright daylight` },
+                { id: '2ca7a0f7-9153-45ce-be2b-1fc89327f61b/grid_0', w: 2304, h: 1536, prompt: `futuristic qipao, pink seamless astronaut skirt, sitting cross-legged at a floating space cafe, looking at camera, high angle, depth of field` },
+                { id: 'ec03f17f-d94e-46cb-999b-9c1678943ce1/grid_0', w: 2304, h: 1536, prompt: `futuristic qipao, pink seamless astronaut skirt, sitting cross-legged at a floating space cafe, looking at camera, high angle, depth of field` },
+            ].map((d, i) => {
+                // get aspect ratio of the image
+                const ar = d.w / d.h
+                // get the new size for width of image, it is the min value of origin width, max size of the box contain image or the width from maximun of the image height
+                const sizeX = Math.min(d.w, boxMaxSizeX, imgMaxSizeY * ar)
+                // from with width => height of image
+                const sizeY = sizeX / ar + promptSizeY
 
-                    let node = document.createElement('div')
-                    node.className = "box"
-                    node.style.backgroundImage = `url(https://cdn.midjourney.com/${d.id}_384_N.webp)`
+                let node = document.createElement('div')
+                node.className = "box"
+                node.style.backgroundImage = `url(https://cdn.midjourney.com/${d.id}_384_N.webp)`
 
-                    let imgNode = document.createElement('img')
+                let imgNode = document.createElement('img')
 
-                    let promptNode = document.createElement('figcaption')
-                    promptNode.className = "prompt"
-                    promptNode.textContent = d.prompt
+                let promptNode = document.createElement('figcaption')
+                promptNode.className = "prompt"
+                promptNode.textContent = d.prompt
 
-                    node.append(imgNode, promptNode)
+                node.append(imgNode, promptNode)
 
-                    return {
-                        id: d.id,
-                        ar, // aspect ratio
-                        naturalSizeX: d.w,
-                        sizeX: spring(sizeX),
-                        sizeY: spring(sizeY),
-                        x: spring(Math.floor(i / cols) * -windowSizeX - windowSizeX),
-                        y: spring(windowSizeY + Math.floor(i / cols) * imgMaxSizeY),
-                        scale: spring(1),
-                        // for brightness and blur
-                        fxFactor: spring(20),
-                        node
-                    }
-                })
+                return {
+                    id: d.id,
+                    ar, // aspect ratio
+                    naturalSizeX: d.w,
+                    sizeX: spring(sizeX),
+                    sizeY: spring(sizeY),
+                    x: spring(Math.floor(i / cols) * -windowSizeX - windowSizeX),
+                    y: spring(windowSizeY + Math.floor(i / cols) * imgMaxSizeY),
+                    scale: spring(1),
+                    // for brightness and blur
+                    fxFactor: spring(20),
+                    node
+                }
+            })
         }
 
         function springForEach(f) {
@@ -215,7 +241,7 @@
 
             const animationDisabled = reducedMotion.matches
             const currentScrollTop = window.scrollY
-            const hadImageId = window.location.hash.slice(1)
+            const hashImageId = window.location.hash.slice(1)
 
             // step2: 
 
@@ -261,7 +287,30 @@
                 d.fxFactor.dest = 1
             }
 
+            // layout shifted, keep the box in the same place to prevent annoying layout jumps while view
             let adjustedScrollTop = currentScrollTop
+            let newAnchor = anchor
+            // first element in row with top === gapToPeek => adjust for it
+            const anchorY = data[anchor].y.dest - gapToPeek
+            if (newWindowSizeX !== windowSizeX) {
+                adjustedScrollTop = Math.max(0, anchorY)
+            }
+
+
+            // find the new anchor if current one moved too much
+            if (adjustedScrollTop !== scrollTop && Math.abs(anchorY - adjustedScrollTop) > windowSizeY / 10) {
+                // new anchor is picked from left most column
+                for (newAnchor = 0; newAnchor < data.length; newAnchor += cols) {
+                    let d = data[newAnchor]
+                    // find the 1st box whose bottom exceed 20% of window height
+                    if (d.y.dest + d.sizeY.dest - adjustedScrollTop > windowSizeY / 5) break
+                }
+            }
+
+
+
+            // ensure that no matter how the scrolling is abruptly adjusted, the boxes on the screen don't suddenly jump too. When going 1D->2D mode where the dismissed image might be far from the initial one, or when resizing causes layout shifts, the boxes now stay unaffected!
+            for (let { y } of data) y.pos += adjustedScrollTop - currentScrollTop
 
 
             // step 4: run animation
@@ -301,7 +350,13 @@
                     node.style.width = `${d.sizeX.pos}px`
                     node.style.height = `${d.sizeY.pos}px`
                     node.style.transform = `translate3d(${d.x.pos}px, ${d.y.pos}px, 0) scale(${d.scale.pos})`
+                    node.style.filter = `brightness(${d.fxFactor.pos * 100}%)`
+
                     promt.style.top = `${d.sizeX.pos / d.ar}px`
+                    promt.style.lineClamp = promt.style.webkitLineClamp = 2
+                    promt.style.overflow = "hidden"
+
+                    img.style.display = "none"
 
                     if (node.parentNode === null) {
                         document.body.appendChild(node)
@@ -312,11 +367,17 @@
                 }
             }
 
+            // update dummy height for better bottom space
+            dummyPlaceholder.style.height = `${rowsTop.at(-1)}px`
+
 
             // step 6: update and prepare for next frame
+            if (adjustedScrollTop !== currentScrollTop) window.scrollTo({ top: adjustedScrollTop })
             animatedUntilTime = stillAnimating ? newAnimatedUntilTime : null
             windowSizeX = newWindowSizeX
             scrollTop = adjustedScrollTop
+
+            anchor = newAnchor
 
             return stillAnimating
 
@@ -333,6 +394,8 @@
 
         scheduleRender()
 
+        window.addEventListener("resize", () => scheduleRender())
+        window.addEventListener("scroll", () => scheduleRender())
 
     </script>
 </body>
