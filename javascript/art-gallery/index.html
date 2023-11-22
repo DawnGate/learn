@@ -124,8 +124,6 @@
             return v > max ? max : v < min ? min : v
         }
 
-
-
         // constant layour metrics. The rest is dynamic
         const promptPaddingBottom = 8
         const promptSizeY = 47 + promptPaddingBottom
@@ -247,9 +245,8 @@
                 if (x.dest <= pointerX && pointerX < x.dest + sizeX.dest && y.dest <= pointerY && pointerY < y.dest + sizeY.dest) {
                     return i
                 }
-
-                return null
             }
+            return null
         }
 
         function render(now) {
@@ -309,10 +306,13 @@
             }
 
             const hit = hit2DMode(data, pointerXLocal, pointerYLocal)
+            const hoverMagnetFactor = 40
             if (hit === null) cursor = 'auto'
             else {
                 cursor = 'zoom-in'
-                let { x, y, sizeX, sizeY } = data[hit]
+                let { x, y, sizeX, sizeY, scale } = data[hit]
+                x.dest += (pointerXLocal - (x.dest + sizeX.dest / 2)) / hoverMagnetFactor
+                y.dest += (pointerYLocal - (y.dest + sizeY.dest / 2)) / hoverMagnetFactor
                 scale.dest = 1.02
             }
 
@@ -425,6 +425,11 @@
 
         window.addEventListener("resize", () => scheduleRender())
         window.addEventListener("scroll", () => scheduleRender())
+        window.addEventListener('mousemove', (e) => {
+            inputs.pointer.x = e.pageX - window.scrollX;
+            inputs.pointer.y = e.pageY - window.scrollY
+            scheduleRender()
+        })
 
     </script>
 </body>
