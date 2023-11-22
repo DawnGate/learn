@@ -129,7 +129,7 @@
         const promptSizeY = 47 + promptPaddingBottom
         const prompt1DSizeY = 64 + promptPaddingBottom
         const boxesGapX = 24, boxesGapY = 24
-        const boxed1DGapX = 52, boxes1DGapY = 28
+        const boxes1DGapX = 52, boxes1DGapY = 28
         const windowPaddingTop = 40
         const gapToPeek = windowPaddingTop // show some gap at the top of page to first element in row
         const hitArea1DSizeX = 100 // left and right click region in 1D mode
@@ -249,6 +249,17 @@
             return null
         }
 
+        // check box hit in 1D array
+        function hit1DMode(data, focused, windowSizeX, pointerX) {
+            // start - [space] - mid - [space] - end, start and end have same width with 
+            // hit Areasize 1D the hit box when occur 
+            // in left => when current focused > 0 and cusor will from 0 -> hitAreaSize1D => new hit will focus -1, but limit in 0
+            // in right => when curent focused < data.length - 1 and cursor will from windowSizeX - hitAreasize1D => new hit will focus + 1, but limit at data.length - 1
+            return focused > 0 && 0 <= pointerX && pointerX <= hitArea1DSizeX ? Math.max(0, focused - 1) // left
+                : focused < data.length - 1 && pointerX >= windowSizeX - hitArea1DSizeX ? Math.min(data.length - 1, focused + 1) // right
+                    : null
+        }
+
         function render(now) {
             // step1: batched DOM reads => avoid accidental DOM read and write interleaving
 
@@ -259,9 +270,26 @@
             const currentScrollTop = window.scrollY
             const hashImageId = window.location.hash.slice(1)
 
+            let focused = null;
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].id === hashImageId) focused = i
+            }
+
+            let newFocused = focused
+
             const pointerXLocal = inputs.pointer.x + window.scrollX, pointerYLocal = inputs.pointer.y + currentScrollTop
 
-            // step2: 
+            // step2: handle inputs=related state change
+
+            if (inputs.clickedTarget !== null) {
+                if (inputs.clickedTarget.tagName === "FIGCAPTION") {
+
+                } else if (focused === null) {
+                    newFocused = hit2DMode(data, pointerXLocal, pointerYLocal)
+                } else {
+                    newFocused = hit1DMode(data, focused, newWindowSizeX, pointerXLocal)
+                }
+            }
 
             // step3:
             const { cols, boxMaxSizeX } = colsBoxMaxSizeXF(newWindowSizeX)
@@ -290,49 +318,109 @@
                 }
             }
 
-            // calcute boxes positions, in 2D view
-            for (let i = 0; i < data.length; i++) {
-                let d = data[i]
-                const sizeX = boxes2DSizeX[i], sizeY = boxes2DSizeY[i]
-                // find the current row for render
-                const currentRow = Math.floor(i / cols)
-                const rowMaxSizeY = rowsTop[currentRow + 1] - boxesGapY - rowsTop[currentRow]
-                d.sizeX.dest = sizeX
-                d.sizeY.dest = sizeY
-                d.x.dest = boxesGapX + (boxMaxSizeX + boxesGapX) * (i % cols) + (boxMaxSizeX - sizeX) / 2
-                d.y.dest = rowsTop[currentRow] + (rowMaxSizeY - sizeY) / 2
-                d.scale.dest = 1
-                d.fxFactor.dest = 1
-            }
-
-            const hit = hit2DMode(data, pointerXLocal, pointerYLocal)
-            const hoverMagnetFactor = 40
-            if (hit === null) cursor = 'auto'
-            else {
-                cursor = 'zoom-in'
-                let { x, y, sizeX, sizeY, scale } = data[hit]
-                x.dest += (pointerXLocal - (x.dest + sizeX.dest / 2)) / hoverMagnetFactor
-                y.dest += (pointerYLocal - (y.dest + sizeY.dest / 2)) / hoverMagnetFactor
-                scale.dest = 1.02
-            }
-
             // layout shifted, keep the box in the same place to prevent annoying layout jumps while view
             let adjustedScrollTop = currentScrollTop
             let newAnchor = anchor
-            // first element in row with top === gapToPeek => adjust for it
-            const anchorY = data[anchor].y.dest - gapToPeek
-            if (newWindowSizeX !== windowSizeX) {
-                adjustedScrollTop = Math.max(0, anchorY)
-            }
+            const hoverMagnetFactor = 40
+
+            if (newFocused == null) {
+
+                if (focused !== null) {
+                    // from 1D to 2D, dismiss
+                }
+
+                // calcute boxes positions, in 2D view
+                for (let i = 0; i < data.length; i++) {
+                    let d = data[i]
+                    const sizeX = boxes2DSizeX[i], sizeY = boxes2DSizeY[i]
+                    // find the current row for render
+                    const currentRow = Math.floor(i / cols)
+                    const rowMaxSizeY = rowsTop[currentRow + 1] - boxesGapY - rowsTop[currentRow]
+                    d.sizeX.dest = sizeX
+                    d.sizeY.dest = sizeY
+                    d.x.dest = boxesGapX + (boxMaxSizeX + boxesGapX) * (i % cols) + (boxMaxSizeX - sizeX) / 2
+                    d.y.dest = rowsTop[currentRow] + (rowMaxSizeY - sizeY) / 2
+                    d.scale.dest = 1
+                    d.fxFactor.dest = 1
+                }
+
+                const hit = hit2DMode(data, pointerXLocal, pointerYLocal)
+                if (hit === null) cursor = 'auto'
+                else {
+                    cursor = 'zoom-in'
+                    let { x, y, sizeX, sizeY, scale } = data[hit]
+                    x.dest += (pointerXLocal - (x.dest + sizeX.dest / 2)) / hoverMagnetFactor
+                    y.dest += (pointerYLocal - (y.dest + sizeY.dest / 2)) / hoverMagnetFactor
+                    scale.dest = 1.02
+                }
 
 
-            // find the new anchor if current one moved too much
-            if (adjustedScrollTop !== scrollTop && Math.abs(anchorY - adjustedScrollTop) > windowSizeY / 10) {
-                // new anchor is picked from left most column
-                for (newAnchor = 0; newAnchor < data.length; newAnchor += cols) {
-                    let d = data[newAnchor]
-                    // find the 1st box whose bottom exceed 20% of window height
-                    if (d.y.dest + d.sizeY.dest - adjustedScrollTop > windowSizeY / 5) break
+                // first element in row with top === gapToPeek => adjust for it
+                const anchorY = data[anchor].y.dest - gapToPeek
+                if (newWindowSizeX !== windowSizeX) {
+                    adjustedScrollTop = Math.max(0, anchorY)
+                }
+
+
+                // find the new anchor if current one moved too much
+                if (adjustedScrollTop !== scrollTop && Math.abs(anchorY - adjustedScrollTop) > windowSizeY / 10) {
+                    // new anchor is picked from left most column
+                    for (newAnchor = 0; newAnchor < data.length; newAnchor += cols) {
+                        let d = data[newAnchor]
+                        // find the 1st box whose bottom exceed 20% of window height
+                        if (d.y.dest + d.sizeY.dest - adjustedScrollTop > windowSizeY / 5) break
+                    }
+                }
+            } else {
+                // 1D mode
+                const img1DSizeY = windowSizeY - windowPaddingTop - prompt1DSizeY - boxes1DGapY
+                const box1DMaxSizeX = newWindowSizeX - boxes1DGapX * 2 - hitArea1DSizeX * 2
+
+                // from right edge of the box and find the left edge of the very first box
+                let currentLeft = hitArea1DSizeX + boxes1DGapX
+                for (let i = newFocused - 1; i >= 0; i--) {
+                    let d = data[i]
+                    const imgSizeX = Math.min(d.naturalSizeX, box1DMaxSizeX, img1DSizeY * d.ar) * 0.7
+                    currentLeft -= imgSizeX + boxes1DGapX
+                }
+
+                // imagination
+                // box1 - box2 - box 3(display) - box4 - box5
+                // first time -> find the box1 left distant => current Left, and each image will display only 0.7 for actualy size
+                // and then loop all image in 
+
+                // calculate boxed position
+                for (let i = 0; i < data.length; i++) {
+                    let d = data[i]
+                    // if image is focuse => size -> 1, else size just 0.7
+                    const imgSizeX = Math.min(d.naturalSizeX, box1DMaxSizeX, img1DSizeY * d.ar) * (i === newFocused ? 1 : 0.7)
+                    const boxSizeY = imgSizeX / d.ar + prompt1DSizeY
+
+                    d.sizeX.dest = imgSizeX
+                    d.sizeY.dest = boxSizeY
+
+
+                    // (windowSizeY - boxSizeY)/ 2 => from top of screen to top of box, adjusted scroll top?
+                    d.y.dest = Math.max(windowPaddingTop, (windowSizeY - boxSizeY) / 2 + adjustedScrollTop)
+                    d.x.dest = i === newFocused ? (newWindowSizeX - imgSizeX) / 2 : currentLeft
+
+                    d.scale.dest = 1
+                    d.fxFactor.dest = i === newFocused ? 1 : 0.2
+
+                    currentLeft = i === newFocused ? newWindowSizeX - hitArea1DSizeX : currentLeft + imgSizeX + boxes1DGapX
+                }
+
+                const hit = hit1DMode(data, newFocused, newWindowSizeX, pointerXLocal)
+                console.log(hit)
+                if (hit === null) cursor = 'zoom-out'
+                else {
+                    // hover to left or right image
+                    cursor = 'zoom-in'
+                    let { x, y, sizeX, sizeY, scale, fxFactor } = data[hit]
+                    x.dest += (pointerXLocal - (x.dest + sizeX.dest / 2)) / hoverMagnetFactor
+                    y.dest += (pointerYLocal - (y.dest + sizeY.dest / 2)) / hoverMagnetFactor
+                    scale.dest = 1.02
+                    fxFactor.dest = 0.5
                 }
             }
 
@@ -402,6 +490,10 @@
 
             // step 6: update and prepare for next frame
             if (adjustedScrollTop !== currentScrollTop) window.scrollTo({ top: adjustedScrollTop })
+            if (newFocused !== focused) {
+                window.history.pushState(null, '', `${window.location.pathname}${window.location.search}${newFocused == null ? '' : '#' + data[newFocused].id}`)
+            }
+            inputs.clickedTarget = null
             animatedUntilTime = stillAnimating ? newAnimatedUntilTime : null
             windowSizeX = newWindowSizeX
             scrollTop = adjustedScrollTop
@@ -426,6 +518,12 @@
         window.addEventListener("resize", () => scheduleRender())
         window.addEventListener("scroll", () => scheduleRender())
         window.addEventListener('mousemove', (e) => {
+            inputs.pointer.x = e.pageX - window.scrollX;
+            inputs.pointer.y = e.pageY - window.scrollY
+            scheduleRender()
+        })
+        window.addEventListener('click', (e) => {
+            inputs.clickedTarget = e.target
             inputs.pointer.x = e.pageX - window.scrollX;
             inputs.pointer.y = e.pageY - window.scrollY
             scheduleRender()
