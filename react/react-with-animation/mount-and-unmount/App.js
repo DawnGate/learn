@@ -4,21 +4,41 @@ import React, { useEffect, useState } from "react";
 function DelayAnimation({ isShow, children }) {
   const [pendingAnimation, setPendingAnimation] = useState(false);
 
-  useEffect(() => {}, [isShow]);
+  const handleEndAnimation = () => {
+    if (!isShow) {
+      setPendingAnimation(false);
+    }
+  };
 
-  return <div className="">{children}</div>;
+  useEffect(() => {
+    if (isShow) {
+      setPendingAnimation(true);
+    }
+  }, [isShow]);
+
+  return (
+    pendingAnimation && (
+      <div
+        className={isShow ? "fadein" : "fadeout"}
+        onAnimationEnd={handleEndAnimation}
+      >
+        {children}
+      </div>
+    )
+  );
 }
 
 // using hook for response waiting fadeout
 
 const useMountTransition = (isMounted, delayAnimation) => {
+  // the delay animation maybe the problem, this will equal with animation action of the children
   const [pendingAnimation, setPendingAnimation] = useState(false);
 
   useEffect(() => {
     let timeOut;
-    if (!isMounted) {
+    if (isMounted) {
       setPendingAnimation(true);
-
+    } else if (!isMounted) {
       timeOut = setTimeout(() => {
         setPendingAnimation(false);
       }, delayAnimation);
@@ -34,16 +54,19 @@ const useMountTransition = (isMounted, delayAnimation) => {
   return pendingAnimation;
 };
 
-// custom component with support from web api -> onAnimationEnd
-
-function MyButton() {
-  return <button>I'm a button</button>;
+function MyButton({ className, style }) {
+  return (
+    <button className={className} style={style}>
+      I'm a button
+    </button>
+  );
 }
 
 export default function MyApp() {
   const [show, setShow] = useState(false);
 
-  const pendingAnimation = useMountTransition(isMounted, 2000);
+  const timeAnimation = 2000;
+  const pendingAnimation = useMountTransition(show, timeAnimation);
 
   const toggleButton = () => {
     setShow((prev) => !prev);
@@ -53,9 +76,24 @@ export default function MyApp() {
     <div>
       <h1>Welcome to my app</h1>
       <button onClick={toggleButton}>Toggle show button</button>
-      <DelayAnimation>
-        <MyButton />
-      </DelayAnimation>
+      <div>
+        <h1>Using hook with pending animation</h1>
+
+        {(show || pendingAnimation) && (
+          <MyButton
+            className={show ? "fadein" : pendingAnimation ? "fadeout" : null}
+            style={{
+              animationDuration: `${timeAnimation}ms`,
+            }}
+          />
+        )}
+      </div>
+      <div>
+        <h1>Delay animation component</h1>
+        <DelayAnimation isShow={show}>
+          <MyButton />
+        </DelayAnimation>
+      </div>
     </div>
   );
 }

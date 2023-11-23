@@ -46,6 +46,10 @@ ul {
   padding-inline-start: 20px;
 }
 
+button {
+  display: block;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
