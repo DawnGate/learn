@@ -1,12 +1,21 @@
 {
   "compilerOptions": {
-    "module": "system",
-    "noImplicitAny": true,
-    "removeComments": true,
-    "preserveConstEnums": true,
-    "outFile": "../../built/local/tsc.js",
-    "sourceMap": true
+    "declaration": true,
+    "declarationDir": "build",
+    "module": "ESNext",
+    "target": "ES5",
+    "lib": ["ES6", "ES2016", "ES2017", "DOM"],
+    "sourceMap": true,
+    "jsx": "react",
+    "moduleResolution": "Node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
   },
   "include": ["src/**/*"],
-  "exclude": ["**/*.spec.ts"]
+  "exclude": [
+    "node_modules",
+    "build",
+    "src/**/*.stories.tsx",
+    "src/**/*.test.tsx"
+  ]
 }
