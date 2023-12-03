@@ -1,65 +1,18 @@
-import { Canvas, Meta } from '@storybook/blocks';
+import { Canvas, Meta } from "@storybook/blocks";
 
-import * as TextStories from './Text.stories';
+import * as TextStories from "./Text.stories";
 
-<Meta of={ TextStories} />
+<Meta of={TextStories} />
 
 # Text
 
-<!--Add a short sentence here describing the general use of this component.-->
+{/* Add a short sentence here describing the general use of this component. */}
 
-<Canvas of={ TextStories.TextStory} />
+<Canvas of={TextStories.TextStory} />
 
-## Anatomy
+Use the text component for displaying textual information to the user (as headings or body)
 
-![Text anatomy](./docs/Text-anatomy.png)
+- Only use text tokens (text styles in figma) when the Text component doesn’t meet your need.
+- Use sentence case. No capital letters.
 
-<!-- Describe the various parts of the component here. Number them correctly as per the diagram.-->
-
-1. **Header:** Text title accompanied by an optional close button
-2. **Content** Container for the main content of the modal; the content can be text, forms, lists, cards, or other elements.
-4. **Footer:** Container for buttons related to the content of the modal
-
-## Spacing
-![Text spacing](./docs/Text-spacing.png)
-
-## Kind
-
-### Kind 1
-<!-- A line indicating what are the specific usages of kind 1 alone-->
-<Canvas of={ TextStories.Kind1Text } />
-
-### Kind 2
-<!-- A line indicating what are the specific usages of kind 2 alone-->
-<Canvas of={ TextStories.Kind2Text } />
-
-
-## Size
-
-### Size 1
-<!-- A line indicating what are the specific usages of size 1 alone-->
-<Canvas of={ TextStories.Size1Text } />
-
-
-### Size 2
-<!-- A line indicating what are the specific usages of size 2 alone-->
-<Canvas of={ TextStories.Size2Text } />
-
-
-## Usage
-
-### When to use
-
-### When not to use
-
-### Example: confirmation
-
-### Programmatically control
-
-
----
-## Resources
-<!-- Add links to external documentation to the underlying library, the HTMl tag, the typescript construct used - anything that will give developers more context.-->
-
-## References
-<!-- Add design and documentation references here. -->
+To know more about how to use typography, ref [Typography](?path=/story/design-system-text--text-story)

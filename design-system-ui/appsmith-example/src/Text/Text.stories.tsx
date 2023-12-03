@@ -13,5 +13,7 @@ type Story = StoryObj<typeof Text>;
 export const TextStory: Story = {
   name: "Text",
   args: {},
-  render: (args) => <Text {...args}>content</Text>,
+  render: (args) => (
+    <Text {...args}>The quick brown fox jumps over the lazy dog</Text>
+  ),
 };

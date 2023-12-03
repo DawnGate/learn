@@ -15,6 +15,8 @@ export type TextKind =
   | "code";
 
 export type TextProps = {
+  /** To change the rendering component */
+  renderAs?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "span" | "label";
   className?: string;
   children?: React.ReactNode;
   kind?: TextKind;
