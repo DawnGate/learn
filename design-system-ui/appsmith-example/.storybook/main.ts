@@ -1,4 +1,5 @@
 const path = require("path");
+const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 
 const config = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
@@ -26,6 +27,8 @@ const config = {
         presets: [["react-app", { flow: false, typescript: true }]],
       },
     });
+
+    config.resolve.plugins = [new TsconfigPathsPlugin()];
     config.resolve.extensions.push(".ts", ".tsx");
 
     return config;
