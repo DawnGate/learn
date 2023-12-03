@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { TextKind } from "./Text.types";
 
 // css util only need if this is a function for handling css style
@@ -54,15 +54,65 @@ const Variables = `
 // Kind style definitions
 const Kind = {
   // The default, span, uses the same values as p for now.
-  span: css`
+  span: `
     --font-size: var(--ads-v2-p-font-size);
     --font-weight: var(--ads-v2-p-font-weight);
     --line-height: var(--ads-v2-p-line-height);
     --letter-spacing: var(--ads-v2-p-letter-spacing);
   `,
-  code: css`
+  code: `
     --font-family: var(--ads-v2-font-family-code);
     --font-size: var(--ads-v2-font-size-4);
+  `,
+  "heading-xl": `
+    --font-size: var(--ads-v2-font-size-14);
+    --font-weight: var(--ads-v2-h1-font-weight);
+    --line-height: var(--ads-v2-h1-line-height);
+    --letter-spacing: var(--ads-v2-h1-letter-spacing);
+    --color: var(--ads-v2-color-fg-emphasis-plus);
+  `,
+  "heading-l": `
+    --font-size: var(--ads-v2-font-size-12);
+    --font-weight: var(--ads-v2-h2-font-weight);
+    --line-height: var(--ads-v2-h2-line-height);
+    --letter-spacing: var(--ads-v2-h2-letter-spacing);
+    --color: var(--ads-v2-color-fg-emphasis-plus);
+  `,
+  "heading-m": `
+    --font-size: var(--ads-v2-font-size-10);
+    --font-weight: var(--ads-v2-h3-font-weight);
+    --line-height: var(--ads-v2-h3-line-height);
+    --letter-spacing: var(--ads-v2-h3-letter-spacing);
+    --color: var(--ads-v2-color-fg-emphasis-plus);
+  `,
+  "heading-s": `
+    --font-size: var(--ads-v2-font-size-6);
+    --font-weight: var(--ads-v2-h4-font-weight);
+    --line-height: var(--ads-v2-h4-line-height);
+    --letter-spacing: var(--ads-v2-h4-letter-spacing);
+    --color: var(--ads-v2-color-fg-emphasis-plus);
+  `,
+  "heading-xs": `
+    --font-size: var(--ads-v2-font-size-4);
+    --font-weight: var(--ads-v2-h5-font-weight);
+    --line-height: var(--ads-v2-h5-line-height);
+    --letter-spacing: var(--ads-v2-h5-letter-spacing);
+    --color: var(--ads-v2-color-fg-emphasis-plus);
+  `,
+  "body-m": `
+    --font-size: var(--ads-v2-font-size-4);
+  `,
+  "body-s": `
+    --font-size: var(--ads-v2-font-size-2);
+  `,
+  "action-l": `
+    --font-size: var(--ads-v2-font-size-6);
+  `,
+  "action-m": `
+    --font-size: var(--ads-v2-font-size-4);
+  `,
+  "action-s": `
+    --font-size: var(--ads-v2-font-size-2);
   `,
 };
 
@@ -94,14 +144,21 @@ export const StyledText = styled.span<{
     font-weight: var(--ads-v2-font-weight-bold);
   }
 
-  /* Editable */
+  /* Editable, it need for using input inner */
   ${({ isEditable }) =>
     isEditable &&
     `
-      &:after{}
+      &:after{
+        content: attr(data-value) "  ";
+        visibility: hidden;
+        font-family: inherit;
+        font-size: inherit;
+        white-space: pre-wrap;
+      }
     `}
 `;
 
+// I don't know why it absolute display ???
 export const StyledEditableInput = styled.input`
   font-size: inherit;
   font-weight: inherit;

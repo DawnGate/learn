@@ -10913,6 +10913,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"normalize.css@npm:^8.0.1":
+  version: 8.0.1
+  resolution: "normalize.css@npm:8.0.1"
+  checksum: 4ddf56d1af5ca755fa5e692e718316d8758ecb792aa96e1ad206824b5810a043763d681d6f7697d46573515f5e9690038b4c91a95c1997567128815545fb8cd7
+  languageName: node
+  linkType: hard
+
 "npm-run-path@npm:^4.0.1":
   version: 4.0.1
   resolution: "npm-run-path@npm:4.0.1"
@@ -12986,6 +12993,7 @@ __metadata:
     eslint-plugin-react-hooks: "npm:^4.6.0"
     eslint-plugin-sort-destructure-keys: "npm:^1.5.0"
     eslint-plugin-storybook: "npm:^0.6.15"
+    normalize.css: "npm:^8.0.1"
     plop: "npm:^4.0.0"
     prettier: "npm:^3.1.0"
     react: "npm:^18.2.0"
