@@ -1,5 +1,73 @@
 import { Meta } from "@storybook/blocks";
 
+import CodeBlock from "../components/CodeBlock";
+
 <Meta title="Docs/Category Tokens/Introduction" />
 
 # Introduction - Category Token
+
+Category tokens are required to be utilized throughout the platform, depending on the category to which the component belongs.
+
+### Naming convention:
+
+<CodeBlock code="atom-category-component-kind-surface-state-presentational_attribute" />
+
+<table>
+  <tbody>
+    <tr>
+      <td>Atom</td>
+      <td>Type of token (color/spacing/typography)</td>
+    </tr>
+    <tr>
+      <td>Category </td>
+      <td>
+        Indicates which category the token belongs to (action, response,
+        control, content)
+      </td>
+    </tr>
+    <tr>
+      <td>Component </td>
+      <td>
+        {" "}
+        Indicates which component the token belongs to (button, input, select etc).This
+        is optional if the token is not component specific. For example, Avatar component
+        has a different token for background color and border color. So, the token
+        will be <CodeBlock code="--ads-v2-colors-content-avatar-surface-default-bg" />{" "}
+        and <CodeBlock code="--ads-v2-colors-content-avatar-surface-default-border" />
+
+        . This is because the component has a different background and border
+        color than it's category.
+      </td>
+    </tr>
+    <tr>
+      <td>Kind</td>
+      <td>
+        Indicates the kind of the component (primary, secondary, tertiary etc)
+      </td>
+    </tr>
+    <tr>
+      <td>Surface</td>
+      <td>
+        Indicates the part of the component the token is being applied to
+        (surface, label, icon etc)
+      </td>
+    </tr>
+    <tr>
+      <td>State</td>
+      <td>
+        Indicates the state of the component (default, hover, active etc)
+      </td>
+    </tr>
+    <tr>
+      <td>PresentationalAttribute</td>
+      <td>
+       Indicates the presenational attribute of the component (background, foreground, border etc).
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+
+### Example:
+
+![--ads-v2-colors-action-primary-surface-default-bg](./docs/categoryTokenStructure.png)
