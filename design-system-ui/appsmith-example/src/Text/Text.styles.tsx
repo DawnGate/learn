@@ -1,10 +1,10 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { TextKind } from "./Text.types";
 
 // css util only need if this is a function for handling css style
 // const Typography = css``
 // style with css variable and have a tokenize settings
-const Typography = `
+const Typography = css`
   --ads-v2-h1-font-size: var(--ads-v2-font-size-10);
   --ads-v2-h1-font-weight: var(--ads-v2-font-weight-bold);
   --ads-v2-h1-line-height: var(--ads-v2-line-height-8);
@@ -41,7 +41,7 @@ const Typography = `
   --ads-v2-p-letter-spacing: var(--ads-v2-letter-spacing-0);
 `;
 
-const Variables = `
+const Variables = css`
   --font-family: var(--ads-v2-font-family);
   --color: var(--ads-v2-colors-content-label-default-fg);
 
@@ -54,64 +54,64 @@ const Variables = `
 // Kind style definitions
 const Kind = {
   // The default, span, uses the same values as p for now.
-  span: `
+  span: css`
     --font-size: var(--ads-v2-p-font-size);
     --font-weight: var(--ads-v2-p-font-weight);
     --line-height: var(--ads-v2-p-line-height);
     --letter-spacing: var(--ads-v2-p-letter-spacing);
   `,
-  code: `
+  code: css`
     --font-family: var(--ads-v2-font-family-code);
     --font-size: var(--ads-v2-font-size-4);
   `,
-  "heading-xl": `
+  "heading-xl": css`
     --font-size: var(--ads-v2-font-size-14);
     --font-weight: var(--ads-v2-h1-font-weight);
     --line-height: var(--ads-v2-h1-line-height);
     --letter-spacing: var(--ads-v2-h1-letter-spacing);
     --color: var(--ads-v2-color-fg-emphasis-plus);
   `,
-  "heading-l": `
+  "heading-l": css`
     --font-size: var(--ads-v2-font-size-12);
     --font-weight: var(--ads-v2-h2-font-weight);
     --line-height: var(--ads-v2-h2-line-height);
     --letter-spacing: var(--ads-v2-h2-letter-spacing);
     --color: var(--ads-v2-color-fg-emphasis-plus);
   `,
-  "heading-m": `
+  "heading-m": css`
     --font-size: var(--ads-v2-font-size-10);
     --font-weight: var(--ads-v2-h3-font-weight);
     --line-height: var(--ads-v2-h3-line-height);
     --letter-spacing: var(--ads-v2-h3-letter-spacing);
     --color: var(--ads-v2-color-fg-emphasis-plus);
   `,
-  "heading-s": `
+  "heading-s": css`
     --font-size: var(--ads-v2-font-size-6);
     --font-weight: var(--ads-v2-h4-font-weight);
     --line-height: var(--ads-v2-h4-line-height);
     --letter-spacing: var(--ads-v2-h4-letter-spacing);
     --color: var(--ads-v2-color-fg-emphasis-plus);
   `,
-  "heading-xs": `
+  "heading-xs": css`
     --font-size: var(--ads-v2-font-size-4);
     --font-weight: var(--ads-v2-h5-font-weight);
     --line-height: var(--ads-v2-h5-line-height);
     --letter-spacing: var(--ads-v2-h5-letter-spacing);
     --color: var(--ads-v2-color-fg-emphasis-plus);
   `,
-  "body-m": `
+  "body-m": css`
     --font-size: var(--ads-v2-font-size-4);
   `,
-  "body-s": `
+  "body-s": css`
     --font-size: var(--ads-v2-font-size-2);
   `,
-  "action-l": `
+  "action-l": css`
     --font-size: var(--ads-v2-font-size-6);
   `,
-  "action-m": `
+  "action-m": css`
     --font-size: var(--ads-v2-font-size-4);
   `,
-  "action-s": `
+  "action-s": css`
     --font-size: var(--ads-v2-font-size-2);
   `,
 };
