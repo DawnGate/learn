@@ -5,6 +5,7 @@
     "module": "ESNext",
     "target": "ES5",
     "lib": ["ES6", "ES2016", "ES2017", "DOM"],
+    "types": ["@testing-library/jest-dom"],
     "sourceMap": true,
     "jsx": "react",
     "moduleResolution": "Node",
