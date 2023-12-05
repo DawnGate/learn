@@ -1,5 +1,33 @@
-import { Meta } from "@storybook/blocks";
+import { Canvas, Meta } from "@storybook/blocks";
 
-<Meta title="Design System/Button" />
+import * as ButtonStories from "./Button.stories";
+
+<Meta of={ButtonStories} />
 
 # Button
+
+Buttons communicate actions that users can take. They are typically placed throughout your UI, in places like: Dialogs, Forms, Pages, etc.
+
+<Canvas of={ButtonStories.ButtonStory} />
+
+## Anatomy
+
+## Kind
+
+### Kind 1
+
+{/* A line indicating what are the specific usages of kind 1 alone */}
+
+### Kind 2
+
+{/* A line indicating what are the specific usages of kind 2 alone */}
+
+## Size
+
+### Size 1
+
+{/* A line indicating what are the specific usages of size 1 alone */}
+
+### Size 2
+
+{/* A line indicating what are the specific usages of size 2 alone */}

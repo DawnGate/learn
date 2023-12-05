@@ -1,7 +1,12 @@
 import React from "react";
 
-const Button = () => {
-  return <div>This is button</div>;
-};
+import { ButtonProps } from "./Button.types";
+import { StyledButton } from "./Button.styles";
 
-export default Button;
+function Button({ children, ...rest }: ButtonProps) {
+  return <StyledButton {...rest}>{children}</StyledButton>;
+}
+
+Button.displayName = "Button";
+
+export { Button };
