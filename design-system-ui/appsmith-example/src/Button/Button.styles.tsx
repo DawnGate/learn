@@ -1,5 +1,11 @@
 import styled, { css } from "styled-components";
 import { ButtonKind, ButtonSize } from "./Button.types";
+import {
+  ButtonContentElementChildClassName,
+  ButtonContentEndIconClassName,
+  ButtonContentStartIconClassName,
+  ButtonLoadingClassName,
+} from "./Button.constants";
 
 const Variables = css`
   // Variables that are controlled, changed, or toggled entirely within this component
@@ -149,6 +155,51 @@ const Kind = {
   `,
 };
 
+export const ButtonContent = styled.div<{
+  isIconButton?: boolean;
+  size?: ButtonSize;
+}>`
+  /* Size style */
+
+  ${({ isIconButton, size }) => size && getSizes(size, isIconButton)}
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border-radius: inherit;
+
+  background-color: var(--button-color-bg);
+  border: 1px solid var(--button-color-border);
+  gap: var(--button-gap);
+  padding: var(--button-padding);
+
+  & > .${ButtonContentElementChildClassName} {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &
+    > .${ButtonContentElementChildClassName},
+    &
+    > .${ButtonContentElementChildClassName}
+    > * {
+    color: var(--button-color-fg);
+    font-family: var(--ads-v2-font-family);
+    font-weight: var(--button-font-weight);
+    font-size: var(--button-font-size);
+  }
+
+  & > .${ButtonContentStartIconClassName} > svg,
+  & > .${ButtonContentEndIconClassName} > svg {
+    color: var(--button-color-fg);
+  }
+`;
+
 export const StyledButton = styled.button<{
   kind?: ButtonKind;
   UNSAFE_height?: string;
@@ -162,22 +213,65 @@ export const StyledButton = styled.button<{
   /* Kind styles */
   ${({ kind }) => kind && Kind[kind]}
 
-  /* Base style */
-  position: relative;
-  cursor: pointer;
-  border: none;
-  background-color: transparent;
-  color: var(--button-color-fg);
-  text-decoration: none;
-  height: var(--button-height);
-  padding: 0px;
-  box-sizing: border-box;
-  overflow: hidden;
-  min-width: fit-content;
-  border-radius: var(--ads-v2-border-radius) !important;
-`;
+  /* Button heights */
 
-export const ButtonContent = styled.div<{
-  isIconButton?: boolean;
-  size?: ButtonSize;
-}>``;
+  ${({ isIconButton, size }) => size && getHeights(size, isIconButton)}
+
+  /* && => create individual components => make sure other button will not have problem with inherit property */
+  && {
+    /* Base style */
+    position: relative;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    color: var(--button-color-fg);
+    text-decoration: none;
+
+    padding: 0px;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    border-radius: var(--ads-v2-border-radius) !important;
+
+    ${({ UNSAFE_height }) =>
+      UNSAFE_height
+        ? `height: ${UNSAFE_height};`
+        : "height: var(--button-height)"}
+    ${({ UNSAFE_width }) => UNSAFE_width && `width: ${UNSAFE_width};`}
+    min-width: ${({ isIconButton }) =>
+      isIconButton ? "unset" : "fit-content"};
+
+    /*  button disable style */
+    &[data-disabled="true"] {
+      cursor: not-allowed;
+      opacity: var(--ads-v2-opacity-disabled);
+    }
+
+    /* Loader style */
+    & > .${ButtonLoadingClassName} {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+      color: var(--button-color-fg);
+    }
+
+    /* Loading styles */
+    &[data-loading="true"] {
+      cursor: not-allowed;
+
+      & > .${ButtonContent} {
+        opacity: var(--ads-v2-opacity-disabled);
+      }
+
+      & > ${ButtonContent} > * {
+        visibility: hidden;
+      }
+    }
+  }
+`;
