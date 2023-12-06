@@ -12,10 +12,8 @@ type Story = StoryObj<typeof Button>;
 
 export const ButtonStory: Story = {
   name: "Button",
-  args: {},
-  render: (args) => (
-    <Button {...args}>
-      content
-    </Button>
-  ),
+  args: {
+    children: "Click me",
+  },
+  render: (args) => <Button {...args} />,
 };
