@@ -1,5 +1,7 @@
 # Caching for simple static page
 
+Simple home page static website
+
 - structure
 
   - index.html
