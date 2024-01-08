@@ -1,12 +1,9 @@
 const express = require("express");
+const path = require("path");
 
 const app = express();
 
 app.set("view engine", "ejs");
-
-app.get("/hello-world", (req, res) => {
-  res.send("Hello World!!");
-});
 
 app.get("/", (req, res) => {
   res.render("pages/index");
@@ -16,6 +13,8 @@ app.get("/", (req, res) => {
 app.get("/about", function (req, res) {
   res.render("pages/about");
 });
+
+app.use("/static", express.static(path.join(__dirname, "public")));
 
 const port = 3000;
 
