@@ -30,7 +30,7 @@ Solutions:
 
 # advantage
 
-> using "templating engines"
+> using "template engines"
 
 - Plentiful customization options (user settings, users interest from user information, habit and past Internet usage)
 - responsiveness to digital trends (Using content of template file easy)
@@ -39,11 +39,18 @@ Solutions:
 - It easy for handle search engine crawler
 - All logic happen on the server => the client machine only need receive html code
 
-> progressive enhancing
+> progressive(enhancing) loading
 
 # resources with same ideas
 
 - https://www.youtube.com/watch?v=-foo92lFIto&list=PL4cUxeGkcC9hAJ-ARcYq_z6lDZV7kT1xD
 
 > Because the problem in reusable components and manager, separate and bundle code => webpack occur for handle in frontend space
-> bundle => get js, css, html => separate these per router when calling
+
+> bundle => get js, css, html => separate or merge into one file these per router when calling
+
+# actions
+
+- cache full page with express + ejs
+- cache image with cdn
+- build with nginx as reverse proxy => cache full page in reverse proxy

@@ -1,0 +1,11 @@
+.blog-link {
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+}
+
+.blog-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: blue;
+}

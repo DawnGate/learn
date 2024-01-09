@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head'); %>
+
+        <link rel="stylesheet" href="/static/css/blogs.css" />
+</head>
+
+<body class="container">
+
+    <header>
+        <%- include('../partials/header'); %>
+    </header>
+
+    <main>
+        <div class="jumbotron">
+            <h1>This is blogs page new!</h1>
+
+            <h2>Here is blogs lists: </h2>
+            <ul>
+                <% for (item of blogLinks) { %>
+                    <li>
+                        <a class="blog-link fs-4-text" href="blogs/simple-blog">
+                            <%= item %>
+                        </a>
+                    </li>
+                    <% } %>
+            </ul>
+        </div>
+    </main>
+
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+
+</body>
+
+</html>
