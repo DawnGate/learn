@@ -4,7 +4,8 @@
   "description": "This is project for dynamic page using: Nodejs + ssr + mongodb + ejs for rendering website -> BLOG web site: ex -> viblo.asia",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",

@@ -54,3 +54,11 @@ Solutions:
 - cache full page with express + ejs
 - cache image with cdn
 - build with nginx as reverse proxy => cache full page in reverse proxy
+
+- blocking in web browser: chrome only can connect 6 requests per host, and maximum 10 requests in same time ( loading 100 picture at same time to get this problem)
+  => solve: loading file async with ajax, loading file with order (screen view, lazy load, first load image with priority),
+- After done construct DOM, css and js start loading?
+
+* web performance best practices \*
+  resources: https://bluetriangle.com/blog/tag/web-performance
+  resource: https://developer.mozilla.org/en-US/docs/Web/Performance
